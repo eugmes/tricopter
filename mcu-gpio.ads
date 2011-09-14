@@ -46,6 +46,12 @@ package MCU.GPIO is
    ----------------------
    type Pin_Number is range 0 .. 7;
 
+   type Bit_Mask is (Masked, Unmasked);
+   for Bit_Mask use (Masked => 0, Unmasked => 1);
+   type Data_Mask is array (Pin_Number) of Bit_Mask;
+   for Data_Mask'Component_Size use 1;
+   for Data_Mask'Size use 8;
+
    type Pin_State is (Low, High);
    for Pin_State use (Low => 0, High => 1);
    type Pin_States is array (Pin_Number) of Pin_State;

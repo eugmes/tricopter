@@ -3,16 +3,16 @@ with System.Storage_Elements;
 generic
    Base_Address : System.Storage_Elements.Integer_Address;
 package MCU.GPIO.Generic_Port is
-   pragma Pure;
+   pragma Preelaborate;
 
    use type System.Storage_Elements.Integer_Address;
    use type System.Storage_Elements.Storage_Offset;
 
-   -- XXX FIXME TODO this register is masked
-   Data_Register : Data_Register_Record;
-   for Data_Register'Address use System'To_Address (Base_Address + Data_Register_Offset);
-   pragma Volatile (Data_Register);
-   pragma Import (Ada, Data_Register);
+   procedure Set_Pins (States : Pin_States; Mask : Data_Mask);
+   pragma Inline (Set_Pins);
+
+   function Get_Pins (Mask : Data_Mask) return Pin_States;
+   pragma Inline (Get_Pins);
 
    Direction_Register : Direction_Register_Record;
    for Direction_Register'Address use System'To_Address (Base_Address + Direction_Register_Offset);
