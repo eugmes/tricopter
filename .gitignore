@@ -1,0 +1,4 @@
+*.o
+*.ali
+b~*.ad[sb]
+main
