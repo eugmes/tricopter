@@ -62,6 +62,8 @@ begin
           others => Disable_Digital_Function), -- TODO maybe enable and set to 0
        others => <>);
 
+   Port_A.Set_Pins (States => (1 => Low, others => <>), Mask => (1 => Unmasked, others => Masked));
+
    -- Port B
    --
    -- 0   - GROUND - Stellaris LM3S3749 Rev A0 Errata 12.3
