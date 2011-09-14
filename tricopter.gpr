@@ -1,0 +1,16 @@
+project Tricopter is
+  for Main use ("main.adb");
+
+  package Builder is
+    for Global_Configuration_Pragmas use "gnat.adc";
+  end Builder;
+
+  package Compiler is
+    -- maybe add t,m?
+    for Default_Switches ("Ada") use ("-O2", "-g", "-gnatN", "-gnatU", "-gnat05", "-gnatwaol", "-gnatyr3aAbdefhiIklnrSux");
+  end Compiler;
+
+  package Linker is
+    for Default_Switches ("Ada") use ("-O2", "-g");
+  end Linker;
+end Tricopter;
