@@ -5,4 +5,5 @@ pragma Restrictions (No_Floating_Point,
                      No_Obsolescent_Features,
                      No_Default_Stream_Attributes,
                      No_Dispatch,
-                     No_IO);
+                     No_IO,
+                     No_Secondary_Stack);

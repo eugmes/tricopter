@@ -7,39 +7,39 @@ package MCU.GPIO is
    --------------------
    -- Base Addresses --
    --------------------
-   Port_A_Base : constant System.Address := System'To_Address (16#4005_8000#);
-   Port_B_Base : constant System.Address := System'To_Address (16#4005_9000#);
-   Port_C_Base : constant System.Address := System'To_Address (16#4005_A000#);
-   Port_D_Base : constant System.Address := System'To_Address (16#4005_B000#);
-   Port_E_Base : constant System.Address := System'To_Address (16#4005_C000#);
-   Port_F_Base : constant System.Address := System'To_Address (16#4005_D000#);
-   Port_G_Base : constant System.Address := System'To_Address (16#4005_E000#);
-   Port_H_Base : constant System.Address := System'To_Address (16#4005_F000#);
+   Port_A_Base : constant System.Storage_Elements.Integer_Address := 16#4005_8000#;
+   Port_B_Base : constant System.Storage_Elements.Integer_Address := 16#4005_9000#;
+   Port_C_Base : constant System.Storage_Elements.Integer_Address := 16#4005_A000#;
+   Port_D_Base : constant System.Storage_Elements.Integer_Address := 16#4005_B000#;
+   Port_E_Base : constant System.Storage_Elements.Integer_Address := 16#4005_C000#;
+   Port_F_Base : constant System.Storage_Elements.Integer_Address := 16#4005_D000#;
+   Port_G_Base : constant System.Storage_Elements.Integer_Address := 16#4005_E000#;
+   Port_H_Base : constant System.Storage_Elements.Integer_Address := 16#4005_F000#;
 
    ----------------------
    -- Register Offsets --
    ----------------------
-   Data_Register_Offset                      : constant System.Storage_Elements.Storage_Offset := 16#000#;
-   Direction_Register_Offset                 : constant System.Storage_Elements.Storage_Offset := 16#400#;
-   Interrupt_Sense_Register_Offset           : constant System.Storage_Elements.Storage_Offset := 16#404#;
-   Interrupt_Both_Edges_Register_Offset      : constant System.Storage_Elements.Storage_Offset := 16#408#;
-   Interrupt_Event_Register_Offset           : constant System.Storage_Elements.Storage_Offset := 16#40C#;
-   Interrupt_Mask_Register_Offset            : constant System.Storage_Elements.Storage_Offset := 16#410#;
-   Raw_Interrupt_Status_Register_Offset      : constant System.Storage_Elements.Storage_Offset := 16#414#;
-   Masked_Interrupt_Status_Register_Offset   : constant System.Storage_Elements.Storage_Offset := 16#418#;
-   Interrupt_Clear_Register_Offset           : constant System.Storage_Elements.Storage_Offset := 16#41C#;
-   Alternate_Function_Select_Register_Offset : constant System.Storage_Elements.Storage_Offset := 16#420#;
-   Drive_Select_2mA_Register_Offset          : constant System.Storage_Elements.Storage_Offset := 16#500#;
-   Drive_Select_4mA_Register_Offset          : constant System.Storage_Elements.Storage_Offset := 16#504#;
-   Drive_Select_8mA_Register_Offset          : constant System.Storage_Elements.Storage_Offset := 16#508#;
-   Open_Drain_Select_Register_Offset         : constant System.Storage_Elements.Storage_Offset := 16#50C#;
-   Pull_Up_Select_Register_Offset            : constant System.Storage_Elements.Storage_Offset := 16#510#;
-   Pull_Down_Select_Register_Offset          : constant System.Storage_Elements.Storage_Offset := 16#514#;
-   Slew_Rate_Control_Register_Offset         : constant System.Storage_Elements.Storage_Offset := 16#518#;
-   Digital_Enable_Register_Offset            : constant System.Storage_Elements.Storage_Offset := 16#51C#;
-   Lock_Register_Offset                      : constant System.Storage_Elements.Storage_Offset := 16#520#;
-   Commit_Register_Offset                    : constant System.Storage_Elements.Storage_Offset := 16#524#;
-   Analog_Mode_Select_Register_Offset        : constant System.Storage_Elements.Storage_Offset := 16#528#;
+   Data_Register_Offset                      : constant := 16#000#;
+   Direction_Register_Offset                 : constant := 16#400#;
+   Interrupt_Sense_Register_Offset           : constant := 16#404#;
+   Interrupt_Both_Edges_Register_Offset      : constant := 16#408#;
+   Interrupt_Event_Register_Offset           : constant := 16#40C#;
+   Interrupt_Mask_Register_Offset            : constant := 16#410#;
+   Raw_Interrupt_Status_Register_Offset      : constant := 16#414#;
+   Masked_Interrupt_Status_Register_Offset   : constant := 16#418#;
+   Interrupt_Clear_Register_Offset           : constant := 16#41C#;
+   Alternate_Function_Select_Register_Offset : constant := 16#420#;
+   Drive_Select_2mA_Register_Offset          : constant := 16#500#;
+   Drive_Select_4mA_Register_Offset          : constant := 16#504#;
+   Drive_Select_8mA_Register_Offset          : constant := 16#508#;
+   Open_Drain_Select_Register_Offset         : constant := 16#50C#;
+   Pull_Up_Select_Register_Offset            : constant := 16#510#;
+   Pull_Down_Select_Register_Offset          : constant := 16#514#;
+   Slew_Rate_Control_Register_Offset         : constant := 16#518#;
+   Digital_Enable_Register_Offset            : constant := 16#51C#;
+   Lock_Register_Offset                      : constant := 16#520#;
+   Commit_Register_Offset                    : constant := 16#524#;
+   Analog_Mode_Select_Register_Offset        : constant := 16#528#;
 
    ----------------------
    -- Type Definitions --
