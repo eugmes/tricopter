@@ -5,7 +5,7 @@ package MCU.GPIO is
    pragma Pure;
 
    --------------------
-   -- Base Addresses --
+   -- Base addresses --
    --------------------
    Port_A_Base : constant System.Storage_Elements.Integer_Address := 16#4005_8000#;
    Port_B_Base : constant System.Storage_Elements.Integer_Address := 16#4005_9000#;
@@ -17,7 +17,7 @@ package MCU.GPIO is
    Port_H_Base : constant System.Storage_Elements.Integer_Address := 16#4005_F000#;
 
    ----------------------
-   -- Register Offsets --
+   -- Register offsets --
    ----------------------
    Data_Register_Offset                      : constant := 16#000#;
    Direction_Register_Offset                 : constant := 16#400#;
@@ -42,7 +42,7 @@ package MCU.GPIO is
    Analog_Mode_Select_Register_Offset        : constant := 16#528#;
 
    ----------------------
-   -- Type Definitions --
+   -- Type definitions --
    ----------------------
    type Pin_Number is range 0 .. 7;
 
