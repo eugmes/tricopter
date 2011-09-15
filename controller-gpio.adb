@@ -1,11 +1,11 @@
 with MCU.GPIO.Port_A;
-with MCU.GPIO.Port_B;
-with MCU.GPIO.Port_C;
-with MCU.GPIO.Port_D;
-with MCU.GPIO.Port_E;
-with MCU.GPIO.Port_F;
-with MCU.GPIO.Port_G;
-with MCU.GPIO.Port_H;
+--with MCU.GPIO.Port_B;
+--with MCU.GPIO.Port_C;
+--with MCU.GPIO.Port_D;
+--with MCU.GPIO.Port_E;
+--with MCU.GPIO.Port_F;
+--with MCU.GPIO.Port_G;
+--with MCU.GPIO.Port_H;
 
 package body Controller.GPIO is
    use MCU.GPIO;
