@@ -1,9 +1,11 @@
+PREFIX = arm-cortexm3-eabi-
+
 all: main
 
 main:
-	gnatmake -Ptricopter
+	$(PREFIX)gnatmake -Ptricopter
 
 clean:
-	gnatclean -Ptricopter
+	$(PREFIX)gnatclean -Ptricopter
 
 .PHONY: all main clean

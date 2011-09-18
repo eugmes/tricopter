@@ -7,10 +7,23 @@ project Tricopter is
 
   package Compiler is
     -- maybe add t,m?
-    for Default_Switches ("Ada") use ("-O2", "-g", "-gnatN", "-gnatU", "-gnat05", "-gnatwaol", "-gnatyr3aAbdefhiIklnrSux", "-ffunction-sections", "-fdata-sections");
+    for Default_Switches ("Ada") use
+       ("-O2",
+        "-g",
+        "-gnatN",
+        "-gnatU",
+        "-gnat05",
+        "-gnatwaol",
+        "-gnatyr3aAbdefhiIklnrSux",
+        "-ffunction-sections",
+        "-fdata-sections");
   end Compiler;
 
   package Linker is
-    for Default_Switches ("Ada") use ("-O2", "-g", "-Wl,--gc-sections");
+    for Default_Switches ("Ada") use
+       ("-O2",
+        "-g",
+        "-Wl,--gc-sections",
+        "-Wl,-Tlm3s3749.ld");
   end Linker;
 end Tricopter;
