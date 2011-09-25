@@ -46,5 +46,5 @@ SECTIONS
     } > ram AT> ram
     _ebss = .;
 
-    _stack_top = ORIGIN(ram) + LENGTH(ram) - 4; /* FIXME */
+    _stack_top = ORIGIN(ram) + LENGTH(ram); /* FIXME */
 }

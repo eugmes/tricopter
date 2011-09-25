@@ -60,12 +60,55 @@ package MCU.System_Control is
    type Interrupt_Status is (Not_Active, Active);
    for Interrupt_Status use (Not_Active => 0, Active => 1); -- FIXME move to common package
 
+   type Oscillator is (Main_Oscillator, Internal_Oscillator, Internal_Oscilator_Div_4, Internal_30_kHZ_Oscillator);
+   for Oscillator use
+      (Main_Oscillator => 0,
+       Internal_Oscillator => 1,
+       Internal_Oscilator_Div_4 => 2,
+       Internal_30_kHZ_Oscillator => 3);
+
+   type Crystal_Frequency is range 0 .. 2**5 - 1;
+
+   type PWM_Divisor is (Div_2, Div_4, Div_8, Div_16, Div_32, Div_64, Div_64_1, Div_64_2);
+   for PWM_Divisor use
+      (Div_2 => 0,
+       Div_4 => 1,
+       Div_8 => 2,
+       Div_16 => 3,
+       Div_32 => 4,
+       Div_64 => 5,
+       Div_64_1 => 6,
+       Div_64_2 => 7);
+
+   type Bypass is new Boolean; -- TODO FIXME XXX
+
+   type Clock_Divisor is range 1 .. 16;
+   for Clock_Divisor'Size use 4; -- should be biased
+
+   type GPIO_Bus_Kind is (APB, AHB);
+   for GPIO_Bus_Kind use (APB => 0, AHB => 1);
+
+   type GPIO_Bus_Kinds is array (GPIO_Port) of GPIO_Bus_Kind;
+   for GPIO_Bus_Kinds'Component_Size use 1;
+
+   type Clock_Gating is (Clock_Disabled, Clock_Enabled);
+   for Clock_Gating use (Clock_Disabled => 0, Clock_Enabled => 1);
+
+   type GPIO_Clock_Gating is array (GPIO_Port) of Clock_Gating;
+   for GPIO_Clock_Gating'Component_Size use 1;
+
    -----------------------------
    -- Types for reserved bits --
    -----------------------------
    type Reserved_1 is mod 2**1;
+   type Reserved_2 is mod 2**2;
+   type Reserved_3 is mod 2**3;
    type Reserved_4 is mod 2**4;
+   type Reserved_5 is mod 2**5;
+   type Reserved_11 is mod 2**11;
+   type Reserved_15 is mod 2**15;
    type Reserved_23 is mod 2**23;
+   type Reserved_24 is mod 2**24;
    type Reserved_26 is mod 2**26;
    type Reserved_30 is mod 2**30;
 
@@ -87,6 +130,7 @@ package MCU.System_Control is
       end record;
 
    for Brown_Out_Reset_Control_Register_Record'Size use 32;
+   for Brown_Out_Reset_Control_Register_Record'Alignment use 4;
    for Brown_Out_Reset_Control_Register_Record'Bit_Order use System.Low_Order_First;
 
    --------------------------------
@@ -105,6 +149,7 @@ package MCU.System_Control is
       end record;
 
    for LDO_Power_Control_Register_Record'Size use 32;
+   for LDO_Power_Control_Register_Record'Alignment use 4;
    for LDO_Power_Control_Register_Record'Bit_Order use System.Low_Order_First;
 
    -----------------------------------
@@ -133,5 +178,160 @@ package MCU.System_Control is
       end record;
 
    for Raw_Interrupt_Status_Register_Record'Size use 32;
+   for Raw_Interrupt_Status_Register_Record'Alignment use 4;
    for Raw_Interrupt_Status_Register_Record'Bit_Order use System.Low_Order_First;
+
+   --------------------------
+   -- Reset cause register --
+   --------------------------
+   type Reset_Cause_Register_Record is
+      record
+         External_Reset : Boolean;
+         Power_On_Reset : Boolean;
+         Brown_Out_Reset : Boolean;
+         Watchdog_Timer_Reset : Boolean;
+         Software_Reset : Boolean;
+         Reserved : Reserved_11;
+         Main_Oscillator_Failure_Reset : Boolean;
+         Reserved1 : Reserved_15;
+      end record;
+
+   for Reset_Cause_Register_Record use
+      record
+         External_Reset at 0 range 0 .. 0;
+         Power_On_Reset at 0 range 1 .. 1;
+         Brown_Out_Reset at 0 range 2 .. 2;
+         Watchdog_Timer_Reset at 0 range 3 .. 3;
+         Software_Reset at 0 range 4 .. 4;
+         Reserved at 0 range 5 .. 15;
+         Main_Oscillator_Failure_Reset at 0 range 16 .. 16;
+         Reserved1 at 0 range 17 .. 31;
+      end record;
+
+   for Reset_Cause_Register_Record'Size use 32;
+   for Reset_Cause_Register_Record'Alignment use 4;
+   for Reset_Cause_Register_Record'Bit_Order use System.Low_Order_First;
+
+   -------------------------------------------
+   -- Run-mode clock configuration register --
+   -------------------------------------------
+   type Run_Mode_Clock_Configuration_Register_Record is
+      record
+         Main_Oscillator_Disable : Boolean;
+         Internal_Oscillator_Disable : Boolean;
+         Reserved : Reserved_2;
+         Oscillator_Source : Oscillator;
+         Crystal_Value : Crystal_Frequency;
+         PLL_Bypass : Bypass;
+         Reserved1 : Reserved_1;
+         PLL_Power_Down : Boolean; -- FIXME XXX TODO
+         Reserved2 : Reserved_3;
+         PWM_Clock_Divisor : PWM_Divisor;
+         Enable_PWM_Clock_Divisor : Boolean;
+         Reserved3 : Reserved_1;
+         Enable_System_Clock_Divider : Boolean;
+         System_Clock_Divisor : Clock_Divisor;
+         Auto_Clock_Gating : Boolean;
+         Reserved4 : Reserved_4;
+      end record;
+
+   for Run_Mode_Clock_Configuration_Register_Record use
+      record
+         Main_Oscillator_Disable at 0 range 0 .. 0;
+         Internal_Oscillator_Disable at 0 range 1 .. 1;
+         Reserved at 0 range 2 .. 3;
+         Oscillator_Source at 0 range 4 .. 5;
+         Crystal_Value at 0 range 6 .. 10;
+         PLL_Bypass at 0 range 11 .. 11;
+         Reserved1 at 0 range 12 .. 12;
+         PLL_Power_Down at 0 range 13 .. 13;
+         Reserved2 at 0 range 14 .. 16;
+         PWM_Clock_Divisor at 0 range 17 .. 19;
+         Enable_PWM_Clock_Divisor at 0 range 20 .. 20;
+         Reserved3 at 0 range 21 .. 21;
+         Enable_System_Clock_Divider at 0 range 22 .. 22;
+         System_Clock_Divisor at 0 range 23 .. 26;
+         Auto_Clock_Gating at 0 range 27 .. 27;
+         Reserved4 at 0 range 28 .. 31;
+      end record;
+
+   for Run_Mode_Clock_Configuration_Register_Record'Size use 32;
+   for Run_Mode_Clock_Configuration_Register_Record'Alignment use 4;
+   for Run_Mode_Clock_Configuration_Register_Record'Bit_Order use System.Low_Order_First;
+
+   -------------------------------
+   -- Crystal to PLL transition --
+   -------------------------------
+   -- TODO
+
+   ---------------------------------------
+   -- GPIO high-performance bus control --
+   ---------------------------------------
+   type GPIO_High_Performance_Bus_Control_Register_Record is
+      record
+         Controls : GPIO_Bus_Kinds;
+         Reserved : Reserved_24;
+      end record;
+
+   for GPIO_High_Performance_Bus_Control_Register_Record use
+      record
+         Controls at 0 range 0 .. 7;
+         Reserved at 0 range 8 .. 31;
+      end record;
+
+   for GPIO_High_Performance_Bus_Control_Register_Record'Size use 32;
+   for GPIO_High_Performance_Bus_Control_Register_Record'Alignment use 4;
+   for GPIO_High_Performance_Bus_Control_Register_Record'Bit_Order use System.Low_Order_First;
+
+   -------------------------------------
+   -- Run-mode clock configuratiuon 2 --
+   -------------------------------------
+   -- TODO
+
+   -----------------------------
+   -- Main osicllator control --
+   -----------------------------
+   -- TODO
+
+   ------------------------------------
+   -- Deep sleep clock configuration --
+   ------------------------------------
+   -- TODO
+
+   -------------------------------------
+   -- Clock gating control register 0 --
+   -------------------------------------
+   -- TODO + deep sleep
+
+   -------------------------------------
+   -- Clock gating control register 1 --
+   -------------------------------------
+   -- TODO + deep sleep
+
+   -------------------------------------
+   -- Clock gating control register 2 --
+   -------------------------------------
+   type Clock_Gating_Control_Register_2_Record is
+      record
+         GPIO : GPIO_Clock_Gating;
+         Reserved : Reserved_5;
+         UDMA : Clock_Gating;
+         Reserved1 : Reserved_2;
+         USB0 : Clock_Gating;
+         Reserved2 : Reserved_15;
+      end record;
+
+   for Clock_Gating_Control_Register_2_Record use
+      record
+         GPIO at 0 range 0 .. 7;
+         Reserved at 0 range 8 .. 12;
+         UDMA at 0 range 13 .. 13;
+         Reserved1 at 0 range 14 .. 15;
+         USB0 at 0 range 16 .. 16;
+         Reserved2 at 0 range 17 .. 31;
+      end record;
+
+   for Clock_Gating_Control_Register_2_Record'Size use 32;
+   for Clock_Gating_Control_Register_2_Record'Alignment use 4;
+   for Clock_Gating_Control_Register_2_Record'Bit_Order use System.Low_Order_First;
 end MCU.System_Control;

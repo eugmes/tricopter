@@ -1,5 +1,6 @@
 with Controller.GPIO;
 with MCU.System_Control;
+--with Controller.LEDs;
 pragma Unreferenced (Controller.GPIO);
 pragma Unreferenced (MCU.System_Control);
 

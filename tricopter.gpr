@@ -1,8 +1,9 @@
 project Tricopter is
-  for Main use ("main.adb");
+  for Main use ("main.adb", "led_demo.adb");
 
   package Builder is
     for Global_Configuration_Pragmas use "gnat.adc";
+    for Executable_Suffix use ".elf";
   end Builder;
 
   package Compiler is
@@ -13,15 +14,17 @@ project Tricopter is
         "-gnatN",
         "-gnatU",
         "-gnat05",
+        "-gnatVn",
         "-gnatwaol",
         "-gnatyr3aAbdefhiIklnrSux",
         "-ffunction-sections",
-        "-fdata-sections");
+        "-fdata-sections",
+        "-fstrict-volatile-bitfields");
   end Compiler;
 
   package Linker is
     for Default_Switches ("Ada") use
-       ("-O2",
+       ("-O1",
         "-g",
         "-Wl,--gc-sections",
         "-Wl,-Tlm3s3749.ld");

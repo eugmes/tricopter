@@ -158,6 +158,7 @@ package MCU.GPIO is
       end record;
 
    for Data_Register_Record'Size use 32;
+   for Data_Register_Record'Alignment use 4;
    for Data_Register_Record'Bit_Order use System.Low_Order_First;
 
    ------------------------
@@ -176,6 +177,7 @@ package MCU.GPIO is
       end record;
 
    for Direction_Register_Record'Size use 32;
+   for Direction_Register_Record'Alignment use 4;
    for Direction_Register_Record'Bit_Order use System.Low_Order_First;
 
    ------------------------------
@@ -194,6 +196,7 @@ package MCU.GPIO is
       end record;
 
    for Interrupt_Sense_Register_Record'Size use 32;
+   for Interrupt_Sense_Register_Record'Alignment use 4;
    for Interrupt_Sense_Register_Record'Bit_Order use System.Low_Order_First;
 
    -----------------------------------
@@ -212,6 +215,7 @@ package MCU.GPIO is
       end record;
 
    for Interrupt_Both_Edges_Register_Record'Size use 32;
+   for Interrupt_Both_Edges_Register_Record'Alignment use 4;
    for Interrupt_Both_Edges_Register_Record'Bit_Order use System.Low_Order_First;
 
    ------------------------------
@@ -230,6 +234,7 @@ package MCU.GPIO is
       end record;
 
    for Interrupt_Event_Register_Record'Size use 32;
+   for Interrupt_Event_Register_Record'Alignment use 4;
    for Interrupt_Event_Register_Record'Bit_Order use System.Low_Order_First;
 
    -----------------------------
@@ -248,6 +253,7 @@ package MCU.GPIO is
       end record;
 
    for Interrupt_Mask_Register_Record'Size use 32;
+   for Interrupt_Mask_Register_Record'Alignment use 4;
    for Interrupt_Mask_Register_Record'Bit_Order use System.Low_Order_First;
 
    --------------------------------
@@ -268,6 +274,7 @@ package MCU.GPIO is
       end record;
 
    for Interrupt_Status_Record'Size use 32;
+   for Interrupt_Status_Record'Alignment use 4;
    for Interrupt_Status_Record'Bit_Order use System.Low_Order_First;
 
    ------------------------------
@@ -286,6 +293,7 @@ package MCU.GPIO is
       end record;
 
    for Interrupt_Clear_Register_Record'Size use 32;
+   for Interrupt_Clear_Register_Record'Alignment use 4;
    for Interrupt_Clear_Register_Record'Bit_Order use System.Low_Order_First;
 
    ----------------------------------------
@@ -304,6 +312,7 @@ package MCU.GPIO is
       end record;
 
    for Alternate_Function_Select_Register_Record'Size use 32;
+   for Alternate_Function_Select_Register_Record'Alignment use 4;
    for Alternate_Function_Select_Register_Record'Bit_Order use System.Low_Order_First;
 
    -----------------------------------
@@ -323,6 +332,7 @@ package MCU.GPIO is
       end record;
 
    for Drive_Select_Register_Record'Size use 32;
+   for Drive_Select_Register_Record'Alignment use 4;
    for Drive_Select_Register_Record'Bit_Order use System.Low_Order_First;
 
    --------------------------------
@@ -341,6 +351,7 @@ package MCU.GPIO is
       end record;
 
    for Open_Drain_Select_Register_Record'Size use 32;
+   for Open_Drain_Select_Register_Record'Alignment use 4;
    for Open_Drain_Select_Register_Record'Bit_Order use System.Low_Order_First;
 
    -----------------------------
@@ -359,6 +370,7 @@ package MCU.GPIO is
       end record;
 
    for Pull_Up_Select_Register_Record'Size use 32;
+   for Pull_Up_Select_Register_Record'Alignment use 4;
    for Pull_Up_Select_Register_Record'Bit_Order use System.Low_Order_First;
 
    -------------------------------
@@ -377,6 +389,7 @@ package MCU.GPIO is
       end record;
 
    for Pull_Down_Select_Register_Record'Size use 32;
+   for Pull_Down_Select_Register_Record'Alignment use 4;
    for Pull_Down_Select_Register_Record'Bit_Order use System.Low_Order_First;
 
    --------------------------------
@@ -395,6 +408,7 @@ package MCU.GPIO is
       end record;
 
    for Slew_Rate_Control_Register_Record'Size use 32;
+   for Slew_Rate_Control_Register_Record'Alignment use 4;
    for Slew_Rate_Control_Register_Record'Bit_Order use System.Low_Order_First;
 
    -----------------------------
@@ -413,6 +427,7 @@ package MCU.GPIO is
       end record;
 
    for Digital_Enable_Register_Record'Size use 32;
+   for Digital_Enable_Register_Record'Alignment use 4;
    for Digital_Enable_Register_Record'Bit_Order use System.Low_Order_First;
 
    -------------------
@@ -420,6 +435,7 @@ package MCU.GPIO is
    -------------------
    type Lock_Value is mod 2**32;
    for Lock_Value'Size use 32;
+   for Lock_Value'Alignment use 4;
    Port_Unlocked : constant Lock_Value := 0;
    Port_Locked   : constant Lock_Value := 1;
    Unlock_Code   : constant Lock_Value := 16#4C4F_434B#;
@@ -440,6 +456,7 @@ package MCU.GPIO is
       end record;
 
    for Commit_Register_Record'Size use 32;
+   for Commit_Register_Record'Alignment use 4;
    for Commit_Register_Record'Bit_Order use System.Low_Order_First;
 
    ---------------------------------
@@ -458,5 +475,6 @@ package MCU.GPIO is
       end record;
 
    for Analog_Mode_Select_Register_Record'Size use 32;
+   for Analog_Mode_Select_Register_Record'Alignment use 4;
    for Analog_Mode_Select_Register_Record'Bit_Order use System.Low_Order_First;
 end MCU.GPIO;

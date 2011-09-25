@@ -11,7 +11,7 @@ package body MCU.GPIO.Generic_Port is
       for Masked_Data_Register'Address use System'To_Address
          (Base_Address + Data_Register_Offset +
             System.Storage_Elements.Integer_Address (Mask_To_Integer (Mask)) * 4);
-      pragma Volatile (Masked_Data_Register);
+      pragma Atomic (Masked_Data_Register);
       pragma Import (Ada, Masked_Data_Register);
    begin
       Masked_Data_Register := (Data => States, others => <>);
@@ -22,7 +22,7 @@ package body MCU.GPIO.Generic_Port is
       for Masked_Data_Register'Address use System'To_Address
          (Base_Address + Data_Register_Offset +
             System.Storage_Elements.Integer_Address (Mask_To_Integer (Mask)) * 4);
-      pragma Volatile (Masked_Data_Register);
+      pragma Atomic (Masked_Data_Register);
       pragma Import (Ada, Masked_Data_Register);
 
       Current_Value : Data_Register_Record;
