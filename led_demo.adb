@@ -90,10 +90,9 @@ begin
    Init_GPIO;
    Current_Phase := Phase1;
 
-   DCC.Put ("Hallo!");
+   DCC.Put_Line ("Hallo!");
 
    loop
-      DCC.Put ('B');
       case Current_Phase is
          when Phase1 =>
             Set_LEDs (Off, On);
