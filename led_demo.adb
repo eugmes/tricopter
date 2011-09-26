@@ -89,13 +89,7 @@ procedure LED_Demo is
    begin
       Clock_Config := Registers.Run_Mode_Clock_Configuration_Register;
 
-      -- Clear the PLL interrupt, just in case...
-      Registers.Raw_Interrupt_Status_Register :=
-         (Brown_Out_Reset => Not_Active,
-          PLL_Lock => Active, -- clear
-          USB_PLL_Lock => Not_Active,
-          Main_Oscillator_Power_Up => Not_Active,
-          others => <>);
+      -- TODO Clear the PLL interrupt, just in case...
 
       -- Bypass the PLL and system clock divider
       Clock_Config.PLL_Bypass := True;
@@ -120,13 +114,7 @@ procedure LED_Demo is
          null;
       end loop;
 
-      -- Clear the interrupt
-      Registers.Raw_Interrupt_Status_Register :=
-         (Brown_Out_Reset => Not_Active,
-          PLL_Lock => Active, -- clear
-          USB_PLL_Lock => Not_Active,
-          Main_Oscillator_Power_Up => Not_Active,
-          others => <>);
+      -- TODO Clear the interrupt
 
       -- Run off the PLL
       Clock_Config := Registers.Run_Mode_Clock_Configuration_Register;
