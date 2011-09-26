@@ -68,6 +68,8 @@ package MCU.System_Control is
        Internal_30_kHZ_Oscillator => 3);
 
    type Crystal_Frequency is range 0 .. 2**5 - 1;
+   Crystal_Frequency_10_MHz : constant Crystal_Frequency := 16#10#;
+   -- TODO other frequencies
 
    type PWM_Divisor is (Div_2, Div_4, Div_8, Div_16, Div_32, Div_64, Div_64_1, Div_64_2);
    for PWM_Divisor use

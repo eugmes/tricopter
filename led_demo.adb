@@ -82,11 +82,65 @@ procedure LED_Demo is
              others => <>);
    end Init_GPIO;
 
+   procedure Switch_To_PLL is
+      use MCU.System_Control;
+
+      Clock_Config : Run_Mode_Clock_Configuration_Register_Record;
+   begin
+      Clock_Config := Registers.Run_Mode_Clock_Configuration_Register;
+
+      -- Clear the PLL interrupt, just in case...
+      Registers.Raw_Interrupt_Status_Register :=
+         (Brown_Out_Reset => Not_Active,
+          PLL_Lock => Active, -- clear
+          USB_PLL_Lock => Not_Active,
+          Main_Oscillator_Power_Up => Not_Active,
+          others => <>);
+
+      -- Bypass the PLL and system clock divider
+      Clock_Config.PLL_Bypass := True;
+      Clock_Config.Enable_System_Clock_Divider := False;
+      Registers.Run_Mode_Clock_Configuration_Register := Clock_Config;
+
+      -- Select the right crystal value (10 MHz)
+      Clock_Config.Crystal_Value := Crystal_Frequency_10_MHz;
+      -- Select main oscillator as source
+      Clock_Config.Oscillator_Source := Main_Oscillator;
+      -- Power-up the PLL
+      Clock_Config.PLL_Power_Down := False;
+      Registers.Run_Mode_Clock_Configuration_Register := Clock_Config;
+
+      -- Select clock divider for 50 MHz operation
+      Clock_Config.System_Clock_Divisor := 4; -- 200 / 50
+      Clock_Config.Enable_System_Clock_Divider := True;
+      Registers.Run_Mode_Clock_Configuration_Register := Clock_Config;
+
+      -- Wait for PLL sync
+      while Registers.Raw_Interrupt_Status_Register.PLL_Lock = Not_Active loop
+         null;
+      end loop;
+
+      -- Clear the interrupt
+      Registers.Raw_Interrupt_Status_Register :=
+         (Brown_Out_Reset => Not_Active,
+          PLL_Lock => Active, -- clear
+          USB_PLL_Lock => Not_Active,
+          Main_Oscillator_Power_Up => Not_Active,
+          others => <>);
+
+      -- Run off the PLL
+      Clock_Config := Registers.Run_Mode_Clock_Configuration_Register;
+      Clock_Config.PLL_Bypass := False;
+      Registers.Run_Mode_Clock_Configuration_Register := Clock_Config;
+   end Switch_To_PLL;
+
    type Phase is (Phase1, Phase2);
    Current_Phase : Phase;
 
    Delay_Value : constant := 1000000;
 begin
+   Switch_To_PLL;
+
    Init_GPIO;
    Current_Phase := Phase1;
 

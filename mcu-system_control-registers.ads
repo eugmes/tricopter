@@ -15,6 +15,21 @@ package MCU.System_Control.Registers is
 
    -- TODO
 
+   Raw_Interrupt_Status_Register : Raw_Interrupt_Status_Register_Record;
+   for Raw_Interrupt_Status_Register'Address use System'To_Address (Base_Address + Raw_Interrupt_Status_Register_Offset);
+   pragma Atomic (Raw_Interrupt_Status_Register);
+   pragma Import (Ada, Raw_Interrupt_Status_Register);
+
+   -- TODO
+
+   Run_Mode_Clock_Configuration_Register : Run_Mode_Clock_Configuration_Register_Record;
+   for Run_Mode_Clock_Configuration_Register'Address use
+      System'To_Address (Base_Address + Run_Mode_Clock_Configuration_Register_Offset);
+   pragma Atomic (Run_Mode_Clock_Configuration_Register);
+   pragma Import (Ada, Run_Mode_Clock_Configuration_Register);
+
+   -- TODO
+
    GPIO_High_Performance_Bus_Control_Register : GPIO_High_Performance_Bus_Control_Register_Record;
    for GPIO_High_Performance_Bus_Control_Register'Address use
       System'To_Address (Base_Address + GPIO_High_Performance_Bus_Control_Register_Offset);
