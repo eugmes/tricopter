@@ -139,7 +139,7 @@ package MCU.System_Control is
    type LDO_Power_Control_Register_Record is
       record
          Voltage_Adjustment : LDO_Voltage_Adjustment;
-         Reserved : Reserved_26;
+         Reserved : Reserved_26 := 0;
       end record;
 
    for LDO_Power_Control_Register_Record use
@@ -191,9 +191,9 @@ package MCU.System_Control is
          Brown_Out_Reset : Boolean;
          Watchdog_Timer_Reset : Boolean;
          Software_Reset : Boolean;
-         Reserved : Reserved_11;
+         Reserved : Reserved_11 := 0;
          Main_Oscillator_Failure_Reset : Boolean;
-         Reserved1 : Reserved_15;
+         Reserved1 : Reserved_15 := 0;
       end record;
 
    for Reset_Cause_Register_Record use
@@ -219,20 +219,20 @@ package MCU.System_Control is
       record
          Main_Oscillator_Disable : Boolean;
          Internal_Oscillator_Disable : Boolean;
-         Reserved : Reserved_2;
+         Reserved : Reserved_2 := 0;
          Oscillator_Source : Oscillator;
          Crystal_Value : Crystal_Frequency;
          PLL_Bypass : Bypass;
-         Reserved1 : Reserved_1;
+         Reserved1 : Reserved_1 := 0;
          PLL_Power_Down : Boolean; -- FIXME XXX TODO
-         Reserved2 : Reserved_3;
+         Reserved2 : Reserved_3 := 0;
          PWM_Clock_Divisor : PWM_Divisor;
          Enable_PWM_Clock_Divisor : Boolean;
-         Reserved3 : Reserved_1;
+         Reserved3 : Reserved_1 := 0;
          Enable_System_Clock_Divider : Boolean;
          System_Clock_Divisor : Clock_Divisor;
          Auto_Clock_Gating : Boolean;
-         Reserved4 : Reserved_4;
+         Reserved4 : Reserved_4 := 0;
       end record;
 
    for Run_Mode_Clock_Configuration_Register_Record use
@@ -270,7 +270,7 @@ package MCU.System_Control is
    type GPIO_High_Performance_Bus_Control_Register_Record is
       record
          Controls : GPIO_Bus_Kinds;
-         Reserved : Reserved_24;
+         Reserved : Reserved_24 := 0;
       end record;
 
    for GPIO_High_Performance_Bus_Control_Register_Record use
@@ -314,11 +314,11 @@ package MCU.System_Control is
    type Clock_Gating_Control_Register_2_Record is
       record
          GPIO : GPIO_Clock_Gating;
-         Reserved : Reserved_5;
+         Reserved : Reserved_5 := 0;
          UDMA : Clock_Gating;
-         Reserved1 : Reserved_2;
+         Reserved1 : Reserved_2 := 0;
          USB0 : Clock_Gating;
-         Reserved2 : Reserved_15;
+         Reserved2 : Reserved_15 := 0;
       end record;
 
    for Clock_Gating_Control_Register_2_Record use

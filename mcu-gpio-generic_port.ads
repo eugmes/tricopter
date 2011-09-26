@@ -12,10 +12,10 @@ package MCU.GPIO.Generic_Port is
    ID : constant GPIO_Port := Port_ID;
 
    procedure Set_Pins (States : Pin_States; Mask : Data_Mask);
-   pragma Inline (Set_Pins);
+   pragma Inline_Always (Set_Pins);
 
    function Get_Pins (Mask : Data_Mask) return Pin_States;
-   pragma Inline (Get_Pins);
+   pragma Inline_Always (Get_Pins);
 
    Direction_Register : Direction_Register_Record;
    for Direction_Register'Address use System'To_Address (Base_Address + Direction_Register_Offset);

@@ -1,6 +1,7 @@
 with MCU.GPIO.Port_D;
 with MCU.System_Control.Registers;
 with MCU.Utils;
+with DCC;
 
 procedure LED_Demo is
    Green_LED : constant MCU.GPIO.Pin_Number := 6;
@@ -10,8 +11,7 @@ procedure LED_Demo is
 
    procedure Set_LEDs (Green, Red : LED_Status) is
       LEDs_Mask : constant MCU.GPIO.Data_Mask :=
-         (Green_LED => MCU.GPIO.Unmasked,
-          Red_LED => MCU.GPIO.Unmasked,
+         (Green_LED | Red_LED => MCU.GPIO.Unmasked,
           others => MCU.GPIO.Masked);
 
       Green_Pin, Red_Pin : MCU.GPIO.Pin_State;
@@ -29,7 +29,7 @@ procedure LED_Demo is
    begin
       Green_Pin := LED_To_Pin (Green);
       Red_Pin := LED_To_Pin (Red);
-      MCU.GPIO.Port_D.Set_Pins (States => (Green_LED => Green_Pin, Red_LED => Red_Pin, others => <>), Mask => LEDs_Mask);
+      MCU.GPIO.Port_D.Set_Pins (States => (Green_LED => Green_Pin, Red_LED => Red_Pin, others => MCU.GPIO.Low), Mask => LEDs_Mask);
    end Set_LEDs;
 
    procedure Init_GPIO is
@@ -40,8 +40,7 @@ procedure LED_Demo is
       MCU.System_Control.Registers.Run_Mode_Clock_Gating_Control_Register_2 :=
          MCU.System_Control.Clock_Gating_Control_Register_2_Record'
             (GPIO => (MCU.GPIO.Port_D.ID => Clock_Enabled, others => Clock_Disabled),
-             UDMA => Clock_Disabled,
-             USB0 => Clock_Disabled,
+             UDMA | USB0 => Clock_Disabled,
              others => <>);
 
       MCU.System_Control.Registers.GPIO_High_Performance_Bus_Control_Register :=
@@ -55,21 +54,30 @@ procedure LED_Demo is
 
       Direction_Register :=
          Direction_Register_Record'
-            (Directions => (Green_LED => Output, Red_LED => Output, others => Input),
+            (Directions => (Green_LED | Red_LED => Output, others => Input),
              others => <>);
 
       Drive_Select_8mA_Register :=
          Drive_Select_Register_Record'
-            (Drive_Selects => (Green_LED => Select_Drive, Red_LED => Select_Drive, others => No_Change),
+            (Drive_Selects => (Green_LED | Red_LED => Select_Drive, others => No_Change),
              others => <>);
 
       Set_LEDs (Off, On);
 
+      Open_Drain_Select_Register :=
+         Open_Drain_Select_Register_Record'
+            (Selections => (Green_LED | Red_LED => Enable_Open_Drain, others => Disable_Open_Drain),
+             others => <>);
+
+      Slew_Rate_Control_Register :=
+         Slew_Rate_Control_Register_Record'
+            (Controls => (Green_LED | Red_LED => Enable_Slew_Rate_Control, others => Disable_Slew_Rate_Control),
+             others => <>);
+
       Digital_Enable_Register :=
          Digital_Enable_Register_Record'
             (Digital_Functions =>
-               (Green_LED => Enable_Digital_Function,
-                Red_LED => Enable_Digital_Function,
+               (Green_LED | Red_LED => Enable_Digital_Function,
                 others => Disable_Digital_Function),
              others => <>);
    end Init_GPIO;
@@ -82,7 +90,10 @@ begin
    Init_GPIO;
    Current_Phase := Phase1;
 
+   DCC.Put ("Hallo!");
+
    loop
+      DCC.Put ('B');
       case Current_Phase is
          when Phase1 =>
             Set_LEDs (Off, On);

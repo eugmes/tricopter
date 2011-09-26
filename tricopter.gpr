@@ -9,12 +9,13 @@ project Tricopter is
   package Compiler is
     -- maybe add t,m?
     for Default_Switches ("Ada") use
-       ("-O2",
+       ("-Os",
         "-g",
         "-gnatN",
         "-gnatU",
         "-gnat05",
         "-gnatVn",
+        "-gnatp",
         "-gnatwaol",
         "-gnatyr3aAbdefhiIklnrSux",
         "-ffunction-sections",
