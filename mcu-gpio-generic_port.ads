@@ -42,12 +42,12 @@ package MCU.GPIO.Generic_Port is
    pragma Atomic (Interrupt_Mask_Register);
    pragma Import (Ada, Interrupt_Mask_Register);
 
-   Raw_Interrupt_Status_Register : Interrupt_Status_Record;
+   Raw_Interrupt_Status_Register : constant Interrupt_Status_Record;
    for Raw_Interrupt_Status_Register'Address use System'To_Address (Base_Address + Raw_Interrupt_Status_Register_Offset);
    pragma Atomic (Raw_Interrupt_Status_Register);
    pragma Import (Ada, Raw_Interrupt_Status_Register);
 
-   Masked_Interrupt_Status_Register : Interrupt_Status_Record;
+   Masked_Interrupt_Status_Register : constant Interrupt_Status_Record;
    for Masked_Interrupt_Status_Register'Address use System'To_Address (Base_Address + Masked_Interrupt_Status_Register_Offset);
    pragma Atomic (Masked_Interrupt_Status_Register);
    pragma Import (Ada, Masked_Interrupt_Status_Register);
