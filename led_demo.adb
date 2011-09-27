@@ -3,7 +3,7 @@ with MCU.GPIO.Port_E;
 with MCU.System_Control.Registers;
 with MCU.Utils;
 with MCU.SSI.SSI1;
-with DCC;
+with Debug_IO;
 
 procedure LED_Demo is
    Green_LED : constant MCU.GPIO.Pin_Number := 6;
@@ -233,9 +233,9 @@ procedure LED_Demo is
       Data := SSI1.Data_Register;
 
       if (Data.Data and 16#00ff#) = 2#1101_0011# then
-         DCC.Put_Line ("Ok");
+         Debug_IO.Put_Line ("Ok");
       else
-         DCC.Put_Line ("No!");
+         Debug_IO.Put_Line ("No!");
       end if;
    end Test_Gyroscope;
 
