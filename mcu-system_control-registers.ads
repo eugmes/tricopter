@@ -15,7 +15,7 @@ package MCU.System_Control.Registers is
 
    -- TODO
 
-   Raw_Interrupt_Status_Register : Raw_Interrupt_Status_Register_Record;
+   Raw_Interrupt_Status_Register : constant Raw_Interrupt_Status_Register_Record;
    for Raw_Interrupt_Status_Register'Address use System'To_Address (Base_Address + Raw_Interrupt_Status_Register_Offset);
    pragma Atomic (Raw_Interrupt_Status_Register);
    pragma Import (Ada, Raw_Interrupt_Status_Register);
