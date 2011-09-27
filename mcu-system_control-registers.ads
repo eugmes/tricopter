@@ -37,10 +37,39 @@ package MCU.System_Control.Registers is
    pragma Import (Ada, GPIO_High_Performance_Bus_Control_Register);
 
    -- TODO
+   Run_Mode_Clock_Gating_Control_Register_1 : Clock_Gating_Control_Register_1_Record;
+   for Run_Mode_Clock_Gating_Control_Register_1'Address use
+      System'To_Address (Base_Address + Run_Mode_Clock_Gating_Control_Register_1_Offset);
+   pragma Atomic (Run_Mode_Clock_Gating_Control_Register_1);
+   pragma Import (Ada, Run_Mode_Clock_Gating_Control_Register_1);
+
+   Sleep_Mode_Clock_Gating_Control_Register_1 : Clock_Gating_Control_Register_1_Record;
+   for Sleep_Mode_Clock_Gating_Control_Register_1'Address use
+      System'To_Address (Base_Address + Sleep_Mode_Clock_Gating_Control_Register_1_Offset);
+   pragma Atomic (Sleep_Mode_Clock_Gating_Control_Register_1);
+   pragma Import (Ada, Sleep_Mode_Clock_Gating_Control_Register_1);
+
+   Deep_Sleep_Mode_Clock_Gating_Control_Register_1 : Clock_Gating_Control_Register_1_Record;
+   for Deep_Sleep_Mode_Clock_Gating_Control_Register_1'Address use
+      System'To_Address (Base_Address + Deep_Sleep_Mode_Clock_Gating_Control_Register_1_Offset);
+   pragma Atomic (Deep_Sleep_Mode_Clock_Gating_Control_Register_1);
+   pragma Import (Ada, Deep_Sleep_Mode_Clock_Gating_Control_Register_1);
 
    Run_Mode_Clock_Gating_Control_Register_2 : Clock_Gating_Control_Register_2_Record;
    for Run_Mode_Clock_Gating_Control_Register_2'Address use
       System'To_Address (Base_Address + Run_Mode_Clock_Gating_Control_Register_2_Offset);
    pragma Atomic (Run_Mode_Clock_Gating_Control_Register_2);
    pragma Import (Ada, Run_Mode_Clock_Gating_Control_Register_2);
+
+   Sleep_Mode_Clock_Gating_Control_Register_2 : Clock_Gating_Control_Register_2_Record;
+   for Sleep_Mode_Clock_Gating_Control_Register_2'Address use
+      System'To_Address (Base_Address + Sleep_Mode_Clock_Gating_Control_Register_2_Offset);
+   pragma Atomic (Sleep_Mode_Clock_Gating_Control_Register_2);
+   pragma Import (Ada, Sleep_Mode_Clock_Gating_Control_Register_2);
+
+   Deep_Sleep_Mode_Clock_Gating_Control_Register_2 : Clock_Gating_Control_Register_2_Record;
+   for Deep_Sleep_Mode_Clock_Gating_Control_Register_2'Address use
+      System'To_Address (Base_Address + Deep_Sleep_Mode_Clock_Gating_Control_Register_2_Offset);
+   pragma Atomic (Deep_Sleep_Mode_Clock_Gating_Control_Register_2);
+   pragma Import (Ada, Deep_Sleep_Mode_Clock_Gating_Control_Register_2);
 end MCU.System_Control.Registers;

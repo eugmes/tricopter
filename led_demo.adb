@@ -1,11 +1,18 @@
 with MCU.GPIO.Port_D;
+with MCU.GPIO.Port_E;
 with MCU.System_Control.Registers;
 with MCU.Utils;
+with MCU.SSI.SSI1;
 with DCC;
 
 procedure LED_Demo is
    Green_LED : constant MCU.GPIO.Pin_Number := 6;
-   Red_LED : constant MCU.GPIO.Pin_Number := 7;
+   Red_LED   : constant MCU.GPIO.Pin_Number := 7;
+
+   Gyro_SPC : constant MCU.GPIO.Pin_Number := 0;
+   Gyro_CS  : constant MCU.GPIO.Pin_Number := 1;
+   Gyro_SDO : constant MCU.GPIO.Pin_Number := 2;
+   Gyro_SDI : constant MCU.GPIO.Pin_Number := 3;
 
    type LED_Status is (Off, On);
 
@@ -32,52 +39,87 @@ procedure LED_Demo is
       MCU.GPIO.Port_D.Set_Pins (States => (Green_LED => Green_Pin, Red_LED => Red_Pin, others => MCU.GPIO.Low), Mask => LEDs_Mask);
    end Set_LEDs;
 
-   procedure Init_GPIO is
+   procedure Init_System_Control is
       use MCU.GPIO;
       use MCU.System_Control;
-      use MCU.GPIO.Port_D;
-   begin
-      MCU.System_Control.Registers.Run_Mode_Clock_Gating_Control_Register_2 :=
-         MCU.System_Control.Clock_Gating_Control_Register_2_Record'
-            (GPIO => (MCU.GPIO.Port_D.ID => Clock_Enabled, others => Clock_Disabled),
-             UDMA | USB0 => Clock_Disabled,
-             others => <>);
 
-      MCU.System_Control.Registers.GPIO_High_Performance_Bus_Control_Register :=
-         MCU.System_Control.GPIO_High_Performance_Bus_Control_Register_Record'
+      Clock_Register_1 : Clock_Gating_Control_Register_1_Record;
+      Clock_Register_2 : Clock_Gating_Control_Register_2_Record;
+   begin
+      Registers.GPIO_High_Performance_Bus_Control_Register :=
+         GPIO_High_Performance_Bus_Control_Register_Record'
             (Controls => (others => AHB),
              others => <>);
 
-      MCU.Utils.Nop;
-      MCU.Utils.Nop;
-      MCU.Utils.Nop;
+      Clock_Register_1 := Registers.Run_Mode_Clock_Gating_Control_Register_1;
+      Clock_Register_1.SSI (MCU.SSI.SSI1.ID) := Clock_Enabled;
+      Registers.Run_Mode_Clock_Gating_Control_Register_1 := Clock_Register_1;
 
-      Direction_Register :=
+      Clock_Register_2 := Registers.Run_Mode_Clock_Gating_Control_Register_2;
+      Clock_Register_2.GPIO (Port_D.ID) := Clock_Enabled;
+      Clock_Register_2.GPIO (Port_E.ID) := Clock_Enabled;
+      Registers.Run_Mode_Clock_Gating_Control_Register_2 := Clock_Register_2;
+   end Init_System_Control;
+
+   procedure Init_GPIO is
+      use MCU.GPIO;
+   begin
+      ------------
+      -- Port D --
+      ------------
+      Port_D.Direction_Register :=
          Direction_Register_Record'
             (Directions => (Green_LED | Red_LED => Output, others => Input),
              others => <>);
 
-      Drive_Select_8mA_Register :=
+      Port_D.Drive_Select_8mA_Register :=
          Drive_Select_Register_Record'
             (Drive_Selects => (Green_LED | Red_LED => Select_Drive, others => No_Change),
              others => <>);
 
-      Set_LEDs (Off, On);
+      Set_LEDs (Green => Off, Red => On);
 
-      Open_Drain_Select_Register :=
+      Port_D.Open_Drain_Select_Register :=
          Open_Drain_Select_Register_Record'
             (Selections => (Green_LED | Red_LED => Enable_Open_Drain, others => Disable_Open_Drain),
              others => <>);
 
-      Slew_Rate_Control_Register :=
+      Port_D.Slew_Rate_Control_Register :=
          Slew_Rate_Control_Register_Record'
             (Controls => (Green_LED | Red_LED => Enable_Slew_Rate_Control, others => Disable_Slew_Rate_Control),
              others => <>);
 
-      Digital_Enable_Register :=
+      Port_D.Digital_Enable_Register :=
          Digital_Enable_Register_Record'
             (Digital_Functions =>
                (Green_LED | Red_LED => Enable_Digital_Function,
+                others => Disable_Digital_Function),
+             others => <>);
+
+      ------------
+      -- Port E --
+      ------------
+      Port_E.Direction_Register :=
+         Direction_Register_Record'
+            (Directions =>
+               (Gyro_SPC | Gyro_CS | Gyro_SDI => Output,
+                others => Input),
+             others => <>);
+
+      Port_E.Alternate_Function_Select_Register :=
+         Alternate_Function_Select_Register_Record'
+            (Functions => (Gyro_SPC | Gyro_CS | Gyro_SDO | Gyro_SDI => Alternate_Function, others => GPIO_Mode),
+             others => <>);
+
+      Port_E.Pull_Up_Select_Register :=
+         Pull_Up_Select_Register_Record'
+            (Selections => (Gyro_SDO => Enable_Pull_Up, others => Disable_Pull_Up),
+             others => <>);
+
+      Port_E.Digital_Enable_Register :=
+         Digital_Enable_Register_Record'
+            (Digital_Functions =>
+               (Gyro_SPC | Gyro_CS | Gyro_SDO | Gyro_SDI => Enable_Digital_Function,
                 others => Disable_Digital_Function),
              others => <>);
    end Init_GPIO;
@@ -122,30 +164,108 @@ procedure LED_Demo is
       Registers.Run_Mode_Clock_Configuration_Register := Clock_Config;
    end Switch_To_PLL;
 
+   procedure Init_SSI is
+      use MCU.SSI;
+
+      Control_0 : Control_Register_0_Record;
+      Control_1 : Control_Register_1_Record;
+      Clock_Prescale : Clock_Prescale_Register_Record;
+   begin
+      -- Make sure the SSI is disabled
+      Control_1 := SSI1.Control_Register_1;
+      Control_1.Port_Enable := False;
+      SSI1.Control_Register_1 := Control_1;
+
+      -- Select master mode
+      Control_1.Mode_Select := Normal_Mode;
+      Control_1.Master_Slave_Select := Master;
+      SSI1.Control_Register_1 := Control_1;
+
+      -- Set 1MHz clock, SPI mode, 16-bit data, SPO=1, SPH=0;
+      -- Clock rate calculations for 50MHz system clock:
+      --   F_SSI = F_Sys / (CPSDVSR * (1 + SCR))
+      --   1e6   = 50e6  / (CPSDVSR * (1 + SCR))
+      --   CPSDVSR * (1 + SCR) = 50
+      --      let CPSDVSR = 2
+      --   2       * (1 + SCR) = 50
+      --      SCR = 24
+      Clock_Prescale := SSI1.Clock_Prescale_Register;
+      Clock_Prescale.Divisor := 16; -- XXX CPSDVSR
+      SSI1.Clock_Prescale_Register := Clock_Prescale;
+
+      Control_0 := SSI1.Control_Register_0;
+      Control_0.Data_Size_Select := 16; -- XXX
+      Control_0.Frame_Format_Select := SPI;
+      Control_0.Serial_Clock_Polarity := Steady_High;
+      Control_0.Serial_Clock_Phase := Second_Edge_Capture; -- XXX
+      Control_0.Serial_Clock_Rate := 24; -- SCR
+      SSI1.Control_Register_0 := Control_0;
+   end Init_SSI;
+
+   procedure Test_Gyroscope is
+      use MCU.SSI;
+
+      Control_1 : Control_Register_1_Record;
+      Data : Data_Register_Record;
+   begin
+      -- Setup reading from L3G4200D register WHO_AM_I (16#0F#)
+      -- FIXME Direct write is buggy?
+      Data := Data_Register_Record'(Data => 2#1000_1111_0000_0000#, others => <>);
+      SSI1.Data_Register := Data;
+      -- SSI1.Data_Register := Data_Register_Record'(Data => 2#1100_1111_0000_0000#, others => <>);
+
+      -- Enable SSI, it should start transmitting
+      Control_1 := SSI1.Control_Register_1;
+      Control_1.Port_Enable := True;
+      SSI1.Control_Register_1 := Control_1;
+
+      -- Wait till end of transaction
+      while SSI1.Status_Register.Busy loop
+         null;
+      end loop;
+
+      -- Disable SSI
+      Control_1 := SSI1.Control_Register_1;
+      Control_1.Port_Enable := False;
+      SSI1.Control_Register_1 := Control_1;
+
+      -- Get back the reply
+      Data := SSI1.Data_Register;
+
+      if (Data.Data and 16#00ff#) = 2#1101_0011# then
+         DCC.Put_Line ("Ok");
+      else
+         DCC.Put_Line ("No!");
+      end if;
+   end Test_Gyroscope;
+
    type Phase is (Phase1, Phase2);
    Current_Phase : Phase;
 
    Delay_Value : constant := 1000000;
 begin
+   Init_System_Control;
    Switch_To_PLL;
 
+   Init_SSI;
    Init_GPIO;
-   Current_Phase := Phase1;
 
-   DCC.Put_Line ("Hallo!");
+   Current_Phase := Phase1;
 
    loop
       case Current_Phase is
          when Phase1 =>
-            Set_LEDs (Off, On);
+            Set_LEDs (Green => Off, Red => On);
             Current_Phase := Phase2;
          when Phase2 =>
-            Set_LEDs (On, Off);
+            Set_LEDs (Green => On, Red => Off);
             Current_Phase := Phase1;
       end case;
 
       for I in 1 .. Delay_Value loop
          MCU.Utils.Nop;
       end loop;
+
+      Test_Gyroscope;
    end loop;
 end LED_Demo;

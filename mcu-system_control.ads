@@ -96,6 +96,18 @@ package MCU.System_Control is
    type Clock_Gating is (Clock_Disabled, Clock_Enabled);
    for Clock_Gating use (Clock_Disabled => 0, Clock_Enabled => 1);
 
+   type UART_Clock_Gating is array (UART_Port) of Clock_Gating;
+   for UART_Clock_Gating'Component_Size use 1;
+
+   type SSI_Clock_Gating is array (SSI_Port) of Clock_Gating;
+   for SSI_Clock_Gating'Component_Size use 1;
+
+   type Timers_Clock_Gating is array (Timer) of Clock_Gating;
+   for Timers_Clock_Gating'Component_Size use 1;
+
+   type Comparators_Clock_Gating is array (Comparator) of Clock_Gating;
+   for Comparators_Clock_Gating'Component_Size use 1;
+
    type GPIO_Clock_Gating is array (GPIO_Port) of Clock_Gating;
    for GPIO_Clock_Gating'Component_Size use 1;
 
@@ -308,7 +320,45 @@ package MCU.System_Control is
    -------------------------------------
    -- Clock gating control register 1 --
    -------------------------------------
-   -- TODO + deep sleep
+   type Clock_Gating_Control_Register_1_Record is
+      record
+         UART : UART_Clock_Gating;
+         Reserved : Reserved_1 := 0;
+         SSI : SSI_Clock_Gating;
+         Reserved1 : Reserved_2 := 0;
+         QEI0 : Clock_Gating;
+         Reserved2 : Reserved_3 := 0;
+         I2C0 : Clock_Gating;
+         Reserved3 : Reserved_1 := 0;
+         I2C1 : Clock_Gating;
+         Reserved4 : Reserved_1 := 0;
+         Timers : Timers_Clock_Gating;
+         Reserved5 : Reserved_4 := 0;
+         Comparators : Comparators_Clock_Gating;
+         Reserved6 : Reserved_5 := 0;
+      end record;
+
+   for Clock_Gating_Control_Register_1_Record use
+      record
+         UART at 0 range 0 .. 2;
+         Reserved at 0 range 3 .. 3;
+         SSI at 0 range 4 .. 5;
+         Reserved1 at 0 range 6 .. 7;
+         QEI0 at 0 range 8 .. 8;
+         Reserved2 at 0 range 9 .. 11;
+         I2C0 at 0 range 12 .. 12;
+         Reserved3 at 0 range 13 .. 13;
+         I2C1 at 0 range 14 .. 14;
+         Reserved4 at 0 range 15 .. 15;
+         Timers at 0 range 16 .. 19;
+         Reserved5 at 0 range 20 .. 23;
+         Comparators at 0 range 24 .. 25;
+         Reserved6 at 0 range 26 .. 31;
+      end record;
+
+   for Clock_Gating_Control_Register_1_Record'Size use 32;
+   for Clock_Gating_Control_Register_1_Record'Alignment use 4;
+   for Clock_Gating_Control_Register_1_Record'Bit_Order use System.Low_Order_First;
 
    -------------------------------------
    -- Clock gating control register 2 --
