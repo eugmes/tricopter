@@ -26,7 +26,7 @@ package MCU.SSI.Generic_Port is
    pragma Atomic (Data_Register);
    pragma Import (Ada, Data_Register);
 
-   Status_Register : Status_Register_Record;
+   Status_Register : constant Status_Register_Record;
    for Status_Register'Address use System'To_Address (Base_Address + Status_Register_Offset);
    pragma Atomic (Status_Register);
    pragma Import (Ada, Status_Register);
