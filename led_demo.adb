@@ -4,8 +4,13 @@ with MCU.System_Control.Registers;
 with MCU.Utils;
 with MCU.SSI.SSI1;
 with Debug_IO;
+with Ada.Characters.Latin_1;
+with L3G4200D.Driver;
+pragma Unreferenced (L3G4200D.Driver);
 
 procedure LED_Demo is
+   package L1 renames Ada.Characters.Latin_1;
+
    Green_LED : constant MCU.GPIO.Pin_Number := 6;
    Red_LED   : constant MCU.GPIO.Pin_Number := 7;
 
@@ -13,6 +18,14 @@ procedure LED_Demo is
    Gyro_CS  : constant MCU.GPIO.Pin_Number := 1;
    Gyro_SDO : constant MCU.GPIO.Pin_Number := 2;
    Gyro_SDI : constant MCU.GPIO.Pin_Number := 3;
+
+   procedure Set_Gyro_CS (State : MCU.GPIO.Pin_State) is
+      Gyro_CS_Mask : constant MCU.GPIO.Data_Mask := (Gyro_CS => MCU.GPIO.Unmasked, others => MCU.GPIO.Masked);
+   begin
+      MCU.GPIO.Port_E.Set_Pins (States => (Gyro_CS => State, others => MCU.GPIO.Low), Mask => Gyro_CS_Mask);
+   end Set_Gyro_CS;
+
+   package Gyro_Driver is new L3G4200D.Driver (MCU.SSI.SSI1, Set_Gyro_CS);
 
    type LED_Status is (Off, On);
 
@@ -108,13 +121,15 @@ procedure LED_Demo is
 
       Port_E.Alternate_Function_Select_Register :=
          Alternate_Function_Select_Register_Record'
-            (Functions => (Gyro_SPC | Gyro_CS | Gyro_SDO | Gyro_SDI => Alternate_Function, others => GPIO_Mode),
+            (Functions => (Gyro_SPC | Gyro_SDO | Gyro_SDI => Alternate_Function, others => GPIO_Mode),
              others => <>);
 
       Port_E.Pull_Up_Select_Register :=
          Pull_Up_Select_Register_Record'
             (Selections => (Gyro_SDO => Enable_Pull_Up, others => Disable_Pull_Up),
              others => <>);
+
+      Set_Gyro_CS (MCU.GPIO.High);
 
       Port_E.Digital_Enable_Register :=
          Digital_Enable_Register_Record'
@@ -164,78 +179,15 @@ procedure LED_Demo is
       Registers.Run_Mode_Clock_Configuration_Register := Clock_Config;
    end Switch_To_PLL;
 
-   procedure Init_SSI is
-      use MCU.SSI;
-
-      Control_0 : Control_Register_0_Record;
-      Control_1 : Control_Register_1_Record;
-      Clock_Prescale : Clock_Prescale_Register_Record;
-   begin
-      -- Make sure the SSI is disabled
-      Control_1 := SSI1.Control_Register_1;
-      Control_1.Port_Enable := False;
-      SSI1.Control_Register_1 := Control_1;
-
-      -- Select master mode
-      Control_1.Mode_Select := Normal_Mode;
-      Control_1.Master_Slave_Select := Master;
-      SSI1.Control_Register_1 := Control_1;
-
-      -- Set 1MHz clock, SPI mode, 16-bit data, SPO=1, SPH=0;
-      -- Clock rate calculations for 50MHz system clock:
-      --   F_SSI = F_Sys / (CPSDVSR * (1 + SCR))
-      --   1e6   = 50e6  / (CPSDVSR * (1 + SCR))
-      --   CPSDVSR * (1 + SCR) = 50
-      --      let CPSDVSR = 2
-      --   2       * (1 + SCR) = 50
-      --      SCR = 24
-      Clock_Prescale := SSI1.Clock_Prescale_Register;
-      Clock_Prescale.Divisor := 16; -- XXX CPSDVSR
-      SSI1.Clock_Prescale_Register := Clock_Prescale;
-
-      Control_0 := SSI1.Control_Register_0;
-      Control_0.Data_Size_Select := 16; -- XXX
-      Control_0.Frame_Format_Select := SPI;
-      Control_0.Serial_Clock_Polarity := Steady_High;
-      Control_0.Serial_Clock_Phase := Second_Edge_Capture; -- XXX
-      Control_0.Serial_Clock_Rate := 24; -- SCR
-      SSI1.Control_Register_0 := Control_0;
-   end Init_SSI;
-
    procedure Test_Gyroscope is
-      use MCU.SSI;
-
-      Control_1 : Control_Register_1_Record;
-      Data : Data_Register_Record;
+      Gyro_Ok : Boolean;
    begin
-      -- Setup reading from L3G4200D register WHO_AM_I (16#0F#)
-      -- FIXME Direct write is buggy?
-      Data := Data_Register_Record'(Data => 2#1000_1111_0000_0000#, others => <>);
-      SSI1.Data_Register := Data;
-      -- SSI1.Data_Register := Data_Register_Record'(Data => 2#1100_1111_0000_0000#, others => <>);
+      Gyro_Driver.Check_Who_Am_I (Gyro_Ok);
 
-      -- Enable SSI, it should start transmitting
-      Control_1 := SSI1.Control_Register_1;
-      Control_1.Port_Enable := True;
-      SSI1.Control_Register_1 := Control_1;
-
-      -- Wait till end of transaction
-      while SSI1.Status_Register.Busy loop
-         null;
-      end loop;
-
-      -- Disable SSI
-      Control_1 := SSI1.Control_Register_1;
-      Control_1.Port_Enable := False;
-      SSI1.Control_Register_1 := Control_1;
-
-      -- Get back the reply
-      Data := SSI1.Data_Register;
-
-      if (Data.Data and 16#00ff#) = 2#1101_0011# then
-         Debug_IO.Put_Line ("Ok");
+      if Gyro_Ok then
+         Debug_IO.Put ("Ok" & L1.LF);
       else
-         Debug_IO.Put_Line ("No!");
+         Debug_IO.Put ("No!" & L1.LF);
       end if;
    end Test_Gyroscope;
 
@@ -247,7 +199,7 @@ begin
    Init_System_Control;
    Switch_To_PLL;
 
-   Init_SSI;
+   Gyro_Driver.Initialize;
    Init_GPIO;
 
    Current_Phase := Phase1;
