@@ -85,7 +85,9 @@ package MCU.System_Control is
    type Bypass is new Boolean; -- TODO FIXME XXX
 
    type Clock_Divisor is range 1 .. 16;
+   pragma Warnings (Off, Clock_Divisor);
    for Clock_Divisor'Size use 4; -- should be biased
+   pragma Warnings (On, Clock_Divisor);
 
    type GPIO_Bus_Kind is (APB, AHB);
    for GPIO_Bus_Kind use (APB => 0, AHB => 1);

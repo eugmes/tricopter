@@ -28,7 +28,9 @@ package MCU.SSI is
    -- Type definitions --
    ----------------------
    type Data_Size is range 1 .. 16;
-   for Data_Size'Size use 4;
+   pragma Warnings (Off, Data_Size);
+   for Data_Size'Size use 4; -- biased ok
+   pragma Warnings (On, Data_Size);
 
    type Frame_Format is (SPI, TI_SSI, MICROWIRE, Reserved);
    for Frame_Format use (SPI => 0, TI_SSI => 1, MICROWIRE => 2, Reserved => 3);
