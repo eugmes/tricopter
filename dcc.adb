@@ -46,7 +46,7 @@ package body DCC is
             exit when not Debug.Busy;
          end loop;
          B := Byte (W and 16#ff#);
-         Debug_Register := (Busy => True, Target_Write_Buffer => B, others => <>);
+         Debug_Register := (Busy => True, Target_Write_Buffer => B, Reserved => 0);
          W := Shift_Right (W, 8);
       end loop;
    end Send_Command;
