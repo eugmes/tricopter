@@ -24,23 +24,23 @@ package L3G4200D is
    Reference_Register    : constant Register_Address := 16#25#;
    Temperature_Register  : constant Register_Address := 16#26#;
    Status_Register       : constant Register_Address := 16#27#;
-   Out_X_Low_Register    : constant Register_Address := 16#27#;
-   Out_H_High_Register   : constant Register_Address := 16#27#;
-   Out_Y_Low_Register    : constant Register_Address := 16#27#;
-   Out_Y_High_Register   : constant Register_Address := 16#27#;
-   Out_Z_Low_Register    : constant Register_Address := 16#27#;
-   Out_Z_High_Register   : constant Register_Address := 16#27#;
-   FIFO_Control_Register : constant Register_Address := 16#27#;
-   FIFO_Source_Register  : constant Register_Address := 16#27#;
-   Interrupt_1_Configuration_Register    : constant Register_Address := 16#27#;
-   Interrupt_1_Source_Register           : constant Register_Address := 16#27#;
-   Interrupt_1_Threshold_X_High_Register : constant Register_Address := 16#27#;
-   Interrupt_1_Threshold_X_Low_Register  : constant Register_Address := 16#27#;
-   Interrupt_1_Threshold_Y_High_Register : constant Register_Address := 16#27#;
-   Interrupt_1_Threshold_Y_Low_Register  : constant Register_Address := 16#27#;
-   Interrupt_1_Threshold_Z_High_Register : constant Register_Address := 16#27#;
-   Interrupt_1_Threshold_Z_Low_Register  : constant Register_Address := 16#27#;
-   Interrupt_1_Duration_Register         : constant Register_Address := 16#27#;
+   Out_X_Low_Register    : constant Register_Address := 16#28#;
+   Out_H_High_Register   : constant Register_Address := 16#29#;
+   Out_Y_Low_Register    : constant Register_Address := 16#2A#;
+   Out_Y_High_Register   : constant Register_Address := 16#2B#;
+   Out_Z_Low_Register    : constant Register_Address := 16#2C#;
+   Out_Z_High_Register   : constant Register_Address := 16#2D#;
+   FIFO_Control_Register : constant Register_Address := 16#2E#;
+   FIFO_Source_Register  : constant Register_Address := 16#2F#;
+   Interrupt_1_Configuration_Register    : constant Register_Address := 16#30#;
+   Interrupt_1_Source_Register           : constant Register_Address := 16#31#;
+   Interrupt_1_Threshold_X_High_Register : constant Register_Address := 16#32#;
+   Interrupt_1_Threshold_X_Low_Register  : constant Register_Address := 16#33#;
+   Interrupt_1_Threshold_Y_High_Register : constant Register_Address := 16#34#;
+   Interrupt_1_Threshold_Y_Low_Register  : constant Register_Address := 16#35#;
+   Interrupt_1_Threshold_Z_High_Register : constant Register_Address := 16#36#;
+   Interrupt_1_Threshold_Z_Low_Register  : constant Register_Address := 16#37#;
+   Interrupt_1_Duration_Register         : constant Register_Address := 16#38#;
 
    -----------------------------------------
    -- Expected value in Who_Am_I_Register --

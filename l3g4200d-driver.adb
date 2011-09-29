@@ -181,7 +181,7 @@ package body L3G4200D.Driver is
            Self_Test_Selection => Normal_Mode,
            Reserved => 0,
            Full_Scale_Selection => Range_500_dps, -- TODO change
-           Endianness_Selection => Big_Endian,
+           Endianness_Selection => Little_Endian,
            Update_Mode_Selection => Continous));
 
       Buffer (5) := Control_Register_5_To_Byte
@@ -215,7 +215,7 @@ package body L3G4200D.Driver is
       end loop;
    end Wait_For_New_Reading;
 
-   function Make_Rate (Low, High : Byte) return Raw_Angular_Rate is
+   function Make_Rate (Low : Byte; High : Byte) return Raw_Angular_Rate is
       use Interfaces;
 
       Tmp : Interfaces.Unsigned_16;
