@@ -1,12 +1,12 @@
 with MCU.GPIO.Port_D;
 with MCU.GPIO.Port_E;
 with MCU.System_Control.Registers;
-with MCU.Utils;
 with MCU.SSI.SSI1;
 with Debug_IO;
 with Ada.Characters.Latin_1;
 with L3G4200D.Driver;
-pragma Unreferenced (L3G4200D.Driver);
+
+use type L3G4200D.Raw_Angular_Rate;
 
 procedure LED_Demo is
    package L1 renames Ada.Characters.Latin_1;
@@ -56,13 +56,13 @@ procedure LED_Demo is
       use MCU.GPIO;
       use MCU.System_Control;
 
+      Bus_Control : GPIO_High_Performance_Bus_Control_Register_Record;
       Clock_Register_1 : Clock_Gating_Control_Register_1_Record;
       Clock_Register_2 : Clock_Gating_Control_Register_2_Record;
    begin
-      Registers.GPIO_High_Performance_Bus_Control_Register :=
-         GPIO_High_Performance_Bus_Control_Register_Record'
-            (Controls => (others => AHB),
-             others => <>);
+      Bus_Control := Registers.GPIO_High_Performance_Bus_Control_Register;
+      Bus_Control.Controls := (others => AHB);
+      Registers.GPIO_High_Performance_Bus_Control_Register := Bus_Control;
 
       Clock_Register_1 := Registers.Run_Mode_Clock_Gating_Control_Register_1;
       Clock_Register_1.SSI (MCU.SSI.SSI1.ID) := Clock_Enabled;
@@ -76,67 +76,80 @@ procedure LED_Demo is
 
    procedure Init_GPIO is
       use MCU.GPIO;
+
+      Direction_Register : Direction_Register_Record;
+      Alternate_Function_Select_Register : Alternate_Function_Select_Register_Record;
+      Drive_Select_Register : Drive_Select_Register_Record;
+      Open_Drain_Select_Register : Open_Drain_Select_Register_Record;
+      Slew_Rate_Control_Register : Slew_Rate_Control_Register_Record;
+      Digital_Enable_Register : Digital_Enable_Register_Record;
+      Pull_Up_Select_Register : Pull_Up_Select_Register_Record;
    begin
       ------------
       -- Port D --
       ------------
-      Port_D.Direction_Register :=
-         Direction_Register_Record'
-            (Directions => (Green_LED | Red_LED => Output, others => Input),
-             others => <>);
+      Direction_Register := Port_D.Direction_Register;
+      Direction_Register.Directions (Green_LED) := Output;
+      Direction_Register.Directions (Red_LED) := Output;
+      Port_D.Direction_Register := Direction_Register;
 
-      Port_D.Drive_Select_8mA_Register :=
-         Drive_Select_Register_Record'
-            (Drive_Selects => (Green_LED | Red_LED => Select_Drive, others => No_Change),
-             others => <>);
+      Alternate_Function_Select_Register := Port_D.Alternate_Function_Select_Register;
+      Alternate_Function_Select_Register.Functions (Green_LED) := GPIO_Mode;
+      Alternate_Function_Select_Register.Functions (Red_LED) := GPIO_Mode;
+      Port_D.Alternate_Function_Select_Register := Alternate_Function_Select_Register;
 
-      Set_LEDs (Green => Off, Red => On);
+      Drive_Select_Register := Port_D.Drive_Select_8mA_Register;
+      Drive_Select_Register.Drive_Selects (Green_LED) := Select_Drive;
+      Drive_Select_Register.Drive_Selects (Red_LED) := Select_Drive;
+      Port_D.Drive_Select_8mA_Register := Drive_Select_Register;
 
-      Port_D.Open_Drain_Select_Register :=
-         Open_Drain_Select_Register_Record'
-            (Selections => (Green_LED | Red_LED => Enable_Open_Drain, others => Disable_Open_Drain),
-             others => <>);
+      Set_LEDs (Green => Off, Red => Off);
 
-      Port_D.Slew_Rate_Control_Register :=
-         Slew_Rate_Control_Register_Record'
-            (Controls => (Green_LED | Red_LED => Enable_Slew_Rate_Control, others => Disable_Slew_Rate_Control),
-             others => <>);
+      Open_Drain_Select_Register := Port_D.Open_Drain_Select_Register;
+      Open_Drain_Select_Register.Selections (Green_LED) := Enable_Open_Drain;
+      Open_Drain_Select_Register.Selections (Red_LED) := Enable_Open_Drain;
+      Port_D.Open_Drain_Select_Register := Open_Drain_Select_Register;
 
-      Port_D.Digital_Enable_Register :=
-         Digital_Enable_Register_Record'
-            (Digital_Functions =>
-               (Green_LED | Red_LED => Enable_Digital_Function,
-                others => Disable_Digital_Function),
-             others => <>);
+      Slew_Rate_Control_Register := Port_D.Slew_Rate_Control_Register;
+      Slew_Rate_Control_Register.Controls (Green_LED) := Enable_Slew_Rate_Control;
+      Slew_Rate_Control_Register.Controls (Red_LED) := Enable_Slew_Rate_Control;
+      Port_D.Slew_Rate_Control_Register := Slew_Rate_Control_Register;
+
+      Digital_Enable_Register := Port_D.Digital_Enable_Register;
+      Digital_Enable_Register.Digital_Functions (Green_LED) := Enable_Digital_Function;
+      Digital_Enable_Register.Digital_Functions (Red_LED) := Enable_Digital_Function;
+      Port_D.Digital_Enable_Register := Digital_Enable_Register;
 
       ------------
       -- Port E --
       ------------
-      Port_E.Direction_Register :=
-         Direction_Register_Record'
-            (Directions =>
-               (Gyro_SPC | Gyro_CS | Gyro_SDI => Output,
-                others => Input),
-             others => <>);
+      Direction_Register := Port_E.Direction_Register;
+      Direction_Register.Directions (Gyro_SPC) := Output;
+      Direction_Register.Directions (Gyro_CS) := Output;
+      Direction_Register.Directions (Gyro_SDI) := Output;
+      Direction_Register.Directions (Gyro_SDO) := Input;
+      Port_E.Direction_Register := Direction_Register;
 
-      Port_E.Alternate_Function_Select_Register :=
-         Alternate_Function_Select_Register_Record'
-            (Functions => (Gyro_SPC | Gyro_SDO | Gyro_SDI => Alternate_Function, others => GPIO_Mode),
-             others => <>);
+      Alternate_Function_Select_Register := Port_E.Alternate_Function_Select_Register;
+      Alternate_Function_Select_Register.Functions (Gyro_SPC) := Alternate_Function;
+      Alternate_Function_Select_Register.Functions (Gyro_CS) := GPIO_Mode;
+      Alternate_Function_Select_Register.Functions (Gyro_SDI) := Alternate_Function;
+      Alternate_Function_Select_Register.Functions (Gyro_SDO) := Alternate_Function;
+      Port_E.Alternate_Function_Select_Register := Alternate_Function_Select_Register;
 
-      Port_E.Pull_Up_Select_Register :=
-         Pull_Up_Select_Register_Record'
-            (Selections => (Gyro_SDO => Enable_Pull_Up, others => Disable_Pull_Up),
-             others => <>);
+      Pull_Up_Select_Register := Port_E.Pull_Up_Select_Register;
+      Pull_Up_Select_Register.Selections (Gyro_SDO) := Enable_Pull_Up;
+      -- FIXME others default (Disable_Pull_Up)
+      Port_E.Pull_Up_Select_Register := Pull_Up_Select_Register;
 
       Set_Gyro_CS (MCU.GPIO.High);
 
-      Port_E.Digital_Enable_Register :=
-         Digital_Enable_Register_Record'
-            (Digital_Functions =>
-               (Gyro_SPC | Gyro_CS | Gyro_SDO | Gyro_SDI => Enable_Digital_Function,
-                others => Disable_Digital_Function),
-             others => <>);
+      Digital_Enable_Register := Port_E.Digital_Enable_Register;
+      Digital_Enable_Register.Digital_Functions (Gyro_SPC) := Enable_Digital_Function;
+      Digital_Enable_Register.Digital_Functions (Gyro_CS) := Enable_Digital_Function;
+      Digital_Enable_Register.Digital_Functions (Gyro_SDO) := Enable_Digital_Function;
+      Digital_Enable_Register.Digital_Functions (Gyro_SDI) := Enable_Digital_Function;
+      Port_E.Digital_Enable_Register := Digital_Enable_Register;
    end Init_GPIO;
 
    procedure Switch_To_PLL is
@@ -191,33 +204,28 @@ procedure LED_Demo is
       end if;
    end Test_Gyroscope;
 
-   type Phase is (Phase1, Phase2);
-   Current_Phase : Phase;
-
-   Delay_Value : constant := 1000000;
+   X_Rate, Y_Rate, Z_Rate : L3G4200D.Raw_Angular_Rate;
+   Threshold : constant L3G4200D.Raw_Angular_Rate := 300;
 begin
    Init_System_Control;
    Switch_To_PLL;
 
    Gyro_Driver.Initialize;
    Init_GPIO;
+   Gyro_Driver.Initialize_Gyroscope;
 
-   Current_Phase := Phase1;
+   Test_Gyroscope;
 
    loop
-      case Current_Phase is
-         when Phase1 =>
-            Set_LEDs (Green => Off, Red => On);
-            Current_Phase := Phase2;
-         when Phase2 =>
-            Set_LEDs (Green => On, Red => Off);
-            Current_Phase := Phase1;
-      end case;
+      Gyro_Driver.Wait_For_New_Reading;
+      Gyro_Driver.Read_Sensor_Data (X_Rate, Y_Rate, Z_Rate);
 
-      for I in 1 .. Delay_Value loop
-         MCU.Utils.Nop;
-      end loop;
-
-      Test_Gyroscope;
+      if Z_Rate > Threshold then
+         Set_LEDs (Green => Off, Red => On);
+      elsif Z_Rate < -Threshold then
+         Set_LEDs (Green => On, Red => Off);
+      else
+         Set_LEDs (Green => Off, Red => Off);
+      end if;
    end loop;
 end LED_Demo;

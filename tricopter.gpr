@@ -19,8 +19,7 @@ project Tricopter is
         "-gnatwaol",
         "-gnatyr3aAbdefhiIklnrSux",
         "-ffunction-sections",
-        "-fdata-sections",
-        "-fstrict-volatile-bitfields");
+        "-fdata-sections");
   end Compiler;
 
   package Linker is

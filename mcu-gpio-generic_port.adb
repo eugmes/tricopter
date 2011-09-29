@@ -14,7 +14,7 @@ package body MCU.GPIO.Generic_Port is
       pragma Atomic (Masked_Data_Register);
       pragma Import (Ada, Masked_Data_Register);
    begin
-      Masked_Data_Register := (Data => States, others => <>);
+      Masked_Data_Register := (Data => States, Reserved => 0);
    end Set_Pins;
 
    function Get_Pins (Mask : Data_Mask) return Pin_States is

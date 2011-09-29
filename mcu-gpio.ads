@@ -148,7 +148,7 @@ package MCU.GPIO is
    type Data_Register_Record is
       record
          Data : Pin_States;
-         Reserved : Reserved_24 := 0;
+         Reserved : Reserved_24;
       end record;
 
    for Data_Register_Record use
@@ -167,7 +167,7 @@ package MCU.GPIO is
    type Direction_Register_Record is
       record
          Directions : Pin_Directions;
-         Reserved : Reserved_24 := 0;
+         Reserved : Reserved_24;
       end record;
 
    for Direction_Register_Record use
@@ -186,7 +186,7 @@ package MCU.GPIO is
    type Interrupt_Sense_Register_Record is
       record
          Interrupt_Senses : Pin_Interrupt_Senses;
-         Reserved : Reserved_24 := 0;
+         Reserved : Reserved_24;
       end record;
 
    for Interrupt_Sense_Register_Record use
@@ -205,7 +205,7 @@ package MCU.GPIO is
    type Interrupt_Both_Edges_Register_Record is
       record
          Both_Edges : Pin_Both_Edges_Senses;
-         Reserved : Reserved_24 := 0;
+         Reserved : Reserved_24;
       end record;
 
    for Interrupt_Both_Edges_Register_Record use
@@ -224,7 +224,7 @@ package MCU.GPIO is
    type Interrupt_Event_Register_Record is
       record
          Events : Pin_Interrupt_Events;
-         Reserved : Reserved_24 := 0;
+         Reserved : Reserved_24;
       end record;
 
    for Interrupt_Event_Register_Record use
@@ -243,7 +243,7 @@ package MCU.GPIO is
    type Interrupt_Mask_Register_Record is
       record
          Masks : Pin_Interrupt_Masks;
-         Reserved : Reserved_24 := 0;
+         Reserved : Reserved_24;
       end record;
 
    for Interrupt_Mask_Register_Record use
@@ -264,7 +264,7 @@ package MCU.GPIO is
    type Interrupt_Status_Record is
       record
          Interrupt_Statuses : Pin_Interrupt_Statuses;
-         Reserved : Reserved_24 := 0;
+         Reserved : Reserved_24;
       end record;
 
    for Interrupt_Status_Record use
@@ -283,7 +283,7 @@ package MCU.GPIO is
    type Interrupt_Clear_Register_Record is
       record
          Interrupt_Clears : Pin_Interrupt_Clears;
-         Reserved : Reserved_24 := 0;
+         Reserved : Reserved_24;
       end record;
 
    for Interrupt_Clear_Register_Record use
@@ -302,7 +302,7 @@ package MCU.GPIO is
    type Alternate_Function_Select_Register_Record is
       record
          Functions : Pin_Functions;
-         Reserved : Reserved_24 := 0;
+         Reserved : Reserved_24;
       end record;
 
    for Alternate_Function_Select_Register_Record use
@@ -322,7 +322,7 @@ package MCU.GPIO is
    type Drive_Select_Register_Record is
       record
          Drive_Selects : Pin_Drive_Selects;
-         Reserved : Reserved_24 := 0;
+         Reserved : Reserved_24;
       end record;
 
    for Drive_Select_Register_Record use
@@ -341,7 +341,7 @@ package MCU.GPIO is
    type Open_Drain_Select_Register_Record is
       record
          Selections : Pin_Open_Drain_Selections;
-         Reserved : Reserved_24 := 0;
+         Reserved : Reserved_24;
       end record;
 
    for Open_Drain_Select_Register_Record use
@@ -360,7 +360,7 @@ package MCU.GPIO is
    type Pull_Up_Select_Register_Record is
       record
          Selections : Pin_Pull_Up_Selections;
-         Reserved : Reserved_24 := 0;
+         Reserved : Reserved_24;
       end record;
 
    for Pull_Up_Select_Register_Record use
@@ -379,7 +379,7 @@ package MCU.GPIO is
    type Pull_Down_Select_Register_Record is
       record
          Selections : Pin_Pull_Down_Selections;
-         Reserved : Reserved_24 := 0;
+         Reserved : Reserved_24;
       end record;
 
    for Pull_Down_Select_Register_Record use
@@ -398,7 +398,7 @@ package MCU.GPIO is
    type Slew_Rate_Control_Register_Record is
       record
          Controls : Pin_Slew_Rate_Controls;
-         Reserved : Reserved_24 := 0;
+         Reserved : Reserved_24;
       end record;
 
    for Slew_Rate_Control_Register_Record use
@@ -417,7 +417,7 @@ package MCU.GPIO is
    type Digital_Enable_Register_Record is
       record
          Digital_Functions : Pin_Digital_Functions;
-         Reserved : Reserved_24 := 0;
+         Reserved : Reserved_24;
       end record;
 
    for Digital_Enable_Register_Record use
@@ -446,7 +446,7 @@ package MCU.GPIO is
    type Commit_Register_Record is
       record
          Commit_Bits : Pin_Commits;
-         Reserved : Reserved_24 := 0;
+         Reserved : Reserved_24;
       end record;
 
    for Commit_Register_Record use
@@ -465,7 +465,7 @@ package MCU.GPIO is
    type Analog_Mode_Select_Register_Record is
       record
          Analog_Modes : Pin_Analog_Modes;
-         Reserved : Reserved_24 := 0;
+         Reserved : Reserved_24;
       end record;
 
    for Analog_Mode_Select_Register_Record use

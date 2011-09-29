@@ -10,4 +10,10 @@ package L3G4200D.Driver is
    procedure Initialize;
 
    procedure Check_Who_Am_I (Is_Ok : out Boolean);
+
+   procedure Initialize_Gyroscope;
+
+   procedure Wait_For_New_Reading;
+
+   procedure Read_Sensor_Data (X_Rate, Y_Rate, Z_Rate : out Raw_Angular_Rate);
 end L3G4200D.Driver;

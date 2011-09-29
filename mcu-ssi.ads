@@ -72,7 +72,7 @@ package MCU.SSI is
          Serial_Clock_Polarity : Clock_Polarity;
          Serial_Clock_Phase : Clock_Phase;
          Serial_Clock_Rate : Clock_Rate;
-         Reserved : Reserved_16 := 0;
+         Reserved : Reserved_16;
       end record;
 
    for Control_Register_0_Record use
