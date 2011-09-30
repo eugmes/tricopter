@@ -17,7 +17,7 @@ package body L3G4200D.Driver is
 
    function Byte_To_Status_Register is new Ada.Unchecked_Conversion (Byte, Status_Register_Byte);
 
-   procedure Initialize is
+   procedure Initialize_SSI is
       use MCU.SSI;
 
       Control_0 : Control_Register_0_Record;
@@ -53,7 +53,7 @@ package body L3G4200D.Driver is
       Control_0.Serial_Clock_Phase := Second_Edge_Capture;
       Control_0.Serial_Clock_Rate := 24; -- SCR
       SSI_Port.Control_Register_0 := Control_0;
-   end Initialize;
+   end Initialize_SSI;
 
    procedure Push_Byte (Item : Byte) is
       use MCU.SSI;
@@ -199,10 +199,10 @@ package body L3G4200D.Driver is
       Read_Registers (Reference_Register, Buffer_1);
    end Write_Control_Registers;
 
-   procedure Initialize_Gyroscope is
+   procedure Initialize is
    begin
       Write_Control_Registers;
-   end Initialize_Gyroscope;
+   end Initialize;
 
    procedure Wait_For_New_Reading is
       Buffer : Byte_Array (1 .. 1);

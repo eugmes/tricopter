@@ -7,4 +7,5 @@ pragma Restrictions (No_Floating_Point,
                      No_Dispatch,
                      No_IO,
                      No_Exceptions,
-                     No_Secondary_Stack);
+                     No_Secondary_Stack,
+                     No_Standard_Storage_Pools);

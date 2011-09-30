@@ -19,12 +19,16 @@ project Tricopter is
         "-gnatwaol",
         "-gnatyr3aAbdefhiIklnrSux",
         "-ffunction-sections",
-        "-fdata-sections");
+        "-fdata-sections",
+        "-flto",
+        "-mtpcs-frame");
   end Compiler;
 
   package Linker is
     for Default_Switches ("Ada") use
-       ("-O1",
+       ("-Os",
+        "-flto",
+        "-mtpcs-frame",
         "-g",
         "-Wl,--gc-sections",
         "-Wl,-Tlm3s3749.ld");

@@ -7,11 +7,11 @@ generic
 package L3G4200D.Driver is
    pragma Preelaborate;
 
-   procedure Initialize;
+   procedure Initialize_SSI;
 
    procedure Check_Who_Am_I (Is_Ok : out Boolean);
 
-   procedure Initialize_Gyroscope;
+   procedure Initialize;
 
    procedure Wait_For_New_Reading;
 
