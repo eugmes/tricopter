@@ -1,6 +1,8 @@
 with L3G4200D;
 
 package Gyroscope is
+   pragma Elaborate_Body;
+
    subtype Raw_Angular_Rate is L3G4200D.Raw_Angular_Rate;
 
    procedure Check_Who_Am_I (Is_Ok : out Boolean);
