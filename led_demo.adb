@@ -205,7 +205,7 @@ procedure LED_Demo is
    end Test_Gyroscope;
 
    X_Rate, Y_Rate, Z_Rate : L3G4200D.Raw_Angular_Rate;
-   Threshold : constant L3G4200D.Raw_Angular_Rate := 300;
+   Threshold : constant L3G4200D.Raw_Angular_Rate := 1000;
 begin
    Init_System_Control;
    Switch_To_PLL;
