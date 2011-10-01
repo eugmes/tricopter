@@ -1,30 +1,12 @@
-with Debug_IO;
-with Ada.Characters.Latin_1;
 with Gyroscope;
 with LED;
 
 use type Gyroscope.Raw_Angular_Rate;
 
 procedure LED_Demo is
-   package L1 renames Ada.Characters.Latin_1;
-
-   procedure Test_Gyroscope is
-      Gyro_Ok : Boolean;
-   begin
-      Gyroscope.Check_Who_Am_I (Gyro_Ok);
-
-      if Gyro_Ok then
-         Debug_IO.Put ("Ok" & L1.LF);
-      else
-         Debug_IO.Put ("No!" & L1.LF);
-      end if;
-   end Test_Gyroscope;
-
    X_Rate, Y_Rate, Z_Rate : Gyroscope.Raw_Angular_Rate;
    Threshold : constant Gyroscope.Raw_Angular_Rate := 1000;
 begin
-   Test_Gyroscope;
-
    loop
       Gyroscope.Read_Sensor_Data (X_Rate, Y_Rate, Z_Rate);
 
