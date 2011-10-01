@@ -1,5 +1,5 @@
 project Tricopter is
-  for Main use ("led_demo.adb");
+  for Main use ("led_demo.adb", "systick_test.adb");
 
   package Builder is
      for Global_Configuration_Pragmas use "gnat.adc";
