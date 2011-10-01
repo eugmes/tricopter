@@ -2,35 +2,39 @@ project Tricopter is
   for Main use ("led_demo.adb");
 
   package Builder is
-    for Global_Configuration_Pragmas use "gnat.adc";
-    for Executable_Suffix use ".elf";
+     for Global_Configuration_Pragmas use "gnat.adc";
+     for Executable_Suffix use ".elf";
   end Builder;
 
   package Compiler is
-    -- maybe add t,m?
-    for Default_Switches ("Ada") use
-       ("-Os",
-        "-g",
-        "-gnatN",
-        "-gnatU",
-        "-gnat05",
-        "-gnatVn",
-        "-gnatp",
-        "-gnatwaol",
-        "-gnatyr3aAbdefhiIklnrSux",
-        "-ffunction-sections",
-        "-fdata-sections",
-        "-flto",
-        "-mtpcs-frame");
+     -- maybe add t,m?
+     for Default_Switches ("Ada") use
+        ("-Os",
+         "-g",
+         "-gnatN",
+         "-gnatU",
+         "-gnat05",
+         "-gnatVn",
+         "-gnatp",
+         "-gnatwaol",
+         "-gnatyr3aAbdefhiIklnrSux",
+         "-ffunction-sections",
+         "-fdata-sections",
+         "-flto",
+         "-mtpcs-frame");
   end Compiler;
 
   package Linker is
-    for Default_Switches ("Ada") use
-       ("-Os",
-        "-flto",
-        "-mtpcs-frame",
-        "-g",
-        "-Wl,--gc-sections",
-        "-Wl,-Tlm3s3749.ld");
+     Common_Switches :=
+        ("-Os",
+         "-flto",
+         "-mtpcs-frame",
+         "-g",
+         "-Wl,--gc-sections",
+         "-ffunction-sections",
+         "-fdata-sections",
+         "-Wl,-Tlm3s3749.ld");
+     for Default_Switches ("Ada") use Common_Switches;
+     for Switches ("led_demo") use Common_Switches & ("-Wl,-Map,led_demo.map");
   end Linker;
 end Tricopter;

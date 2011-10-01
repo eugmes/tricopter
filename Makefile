@@ -13,6 +13,7 @@ main:
 
 clean:
 	$(GNATCLEAN)
+	rm -f *.map
 
 %.s: %.adb
 	$(GNATCOMPILE) -S -o $@ $<
