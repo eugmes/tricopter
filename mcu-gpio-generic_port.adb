@@ -1,3 +1,20 @@
+---------------------------------------------------------------------------
+--      Copyright © 2011 Євгеній Мещеряков <eugen@debian.org>            --
+--                                                                       --
+-- This program is free software: you can redistribute it and/or modify  --
+-- it under the terms of the GNU General Public License as published by  --
+-- the Free Software Foundation, either version 3 of the License, or     --
+-- (at your option) any later version.                                   --
+--                                                                       --
+-- This program is distributed in the hope that it will be useful,       --
+-- but WITHOUT ANY WARRANTY; without even the implied warranty of        --
+-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         --
+-- GNU General Public License for more details.                          --
+--                                                                       --
+-- You should have received a copy of the GNU General Public License     --
+-- along with this program.  If not, see <http://www.gnu.org/licenses/>. --
+---------------------------------------------------------------------------
+
 with Ada.Unchecked_Conversion;
 
 package body MCU.GPIO.Generic_Port is
@@ -13,8 +30,11 @@ package body MCU.GPIO.Generic_Port is
             System.Storage_Elements.Integer_Address (Mask_To_Integer (Mask)) * 4);
       pragma Atomic (Masked_Data_Register);
       pragma Import (Ada, Masked_Data_Register);
+
+      Shadow_Data_Register : Data_Register_Record;
    begin
-      Masked_Data_Register := (Data => States, Reserved => 0);
+      Shadow_Data_Register := (Data => States, Reserved => 0);
+      Masked_Data_Register := Shadow_Data_Register;
    end Set_Pins;
 
    function Get_Pins (Mask : Data_Mask) return Pin_States is
@@ -25,10 +45,10 @@ package body MCU.GPIO.Generic_Port is
       pragma Atomic (Masked_Data_Register);
       pragma Import (Ada, Masked_Data_Register);
 
-      Current_Value : Data_Register_Record;
+      Shadow_Data_Register : Data_Register_Record;
    begin
-      Current_Value := Masked_Data_Register;
-      return Current_Value.Data;
+      Shadow_Data_Register := Masked_Data_Register;
+      return Shadow_Data_Register.Data;
    end Get_Pins;
 
 end MCU.GPIO.Generic_Port;
