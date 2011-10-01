@@ -19,7 +19,7 @@ with MCU.GPIO.Port_D;
 with System_Initialization;
 pragma Elaborate_All (System_Initialization);
 
-package body LED is
+package body Indicators is
    package GPIO_Port renames MCU.GPIO.Port_D;
 
    Green_LED : constant MCU.GPIO.Pin_Number := 6;
@@ -91,4 +91,4 @@ package body LED is
 
 begin
    Init_GPIO;
-end LED;
+end Indicators;

@@ -17,10 +17,10 @@
 
 -- This is a package for controlling indicator LEDs.
 
-package LED is
+package Indicators is
    pragma Elaborate_Body;
 
    type State is (Off, On);
 
    procedure Set_States (Green : State; Red : State);
-end LED;
+end Indicators;

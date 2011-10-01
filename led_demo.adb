@@ -18,7 +18,7 @@
 -- This is a simple program that turns on LEDs if board turns around Z axis.
 
 with Gyroscope;
-with LED;
+with Indicators;
 
 use type Gyroscope.Raw_Angular_Rate;
 
@@ -30,11 +30,11 @@ begin
       Gyroscope.Read_Sensor_Data (X_Rate, Y_Rate, Z_Rate);
 
       if Z_Rate > Threshold then
-         LED.Set_States (Green => LED.Off, Red => LED.On);
+         Indicators.Set_States (Green => Indicators.Off, Red => Indicators.On);
       elsif Z_Rate < -Threshold then
-         LED.Set_States (Green => LED.On, Red => LED.Off);
+         Indicators.Set_States (Green => Indicators.On, Red => Indicators.Off);
       else
-         LED.Set_States (Green => LED.Off, Red => LED.Off);
+         Indicators.Set_States (Green => Indicators.Off, Red => Indicators.Off);
       end if;
    end loop;
 end LED_Demo;
