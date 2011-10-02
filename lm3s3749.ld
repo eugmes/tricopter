@@ -15,15 +15,15 @@ SECTIONS
     .vectors . : { KEEP(*(.vectors)) } > flash
     ASSERT (. != 0, "Vector table is not present")
 
-    .text ALIGN(4) : { *(.text) } > flash
+    .text ALIGN(4) : { *(.text) *(.text.*)} > flash
 
-    .rodata ALIGN(8) : { *(.rodata) } > flash
+    .rodata ALIGN(8) : { *(.rodata) *(.rodata.*)} > flash
 
     _flash_sdata = .;
     . = ORIGIN(ram);
     _sdata = .;
     .data ALIGN(8) : {
-        *(.data)
+        *(.data) *(.data.*)
         . = ALIGN(4);
     } > ram AT> flash
     _edata = .;
@@ -31,7 +31,7 @@ SECTIONS
 
     _sbss = .;
     .bss ALIGN(8) : {
-        *(.bss)
+        *(.bss) *(.bss.*)
         . = ALIGN(4);
     } > ram AT> ram
     _ebss = .;
