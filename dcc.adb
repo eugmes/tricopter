@@ -41,7 +41,6 @@ package body DCC is
 
    for Debug_Register_Record'Size use 16;
    for Debug_Register_Record'Alignment use 2;
-   for Debug_Register_Record'Bit_Order use System.Low_Order_First;
 
    Debug_Register : Debug_Register_Record;
    for Debug_Register'Address use System'To_Address (16#E000_EDF8#);

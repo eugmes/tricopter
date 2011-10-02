@@ -179,7 +179,6 @@ package MCU.GPIO is
 
    for Data_Register_Record'Size use 32;
    for Data_Register_Record'Alignment use 4;
-   for Data_Register_Record'Bit_Order use System.Low_Order_First;
 
    ------------------------
    -- Direction register --
@@ -198,7 +197,6 @@ package MCU.GPIO is
 
    for Direction_Register_Record'Size use 32;
    for Direction_Register_Record'Alignment use 4;
-   for Direction_Register_Record'Bit_Order use System.Low_Order_First;
 
    ------------------------------
    -- Interrupt sense register --
@@ -217,7 +215,6 @@ package MCU.GPIO is
 
    for Interrupt_Sense_Register_Record'Size use 32;
    for Interrupt_Sense_Register_Record'Alignment use 4;
-   for Interrupt_Sense_Register_Record'Bit_Order use System.Low_Order_First;
 
    -----------------------------------
    -- Interrupt both edges register --
@@ -236,7 +233,6 @@ package MCU.GPIO is
 
    for Interrupt_Both_Edges_Register_Record'Size use 32;
    for Interrupt_Both_Edges_Register_Record'Alignment use 4;
-   for Interrupt_Both_Edges_Register_Record'Bit_Order use System.Low_Order_First;
 
    ------------------------------
    -- Interrupt event register --
@@ -255,7 +251,6 @@ package MCU.GPIO is
 
    for Interrupt_Event_Register_Record'Size use 32;
    for Interrupt_Event_Register_Record'Alignment use 4;
-   for Interrupt_Event_Register_Record'Bit_Order use System.Low_Order_First;
 
    -----------------------------
    -- Interrupt mask register --
@@ -274,7 +269,6 @@ package MCU.GPIO is
 
    for Interrupt_Mask_Register_Record'Size use 32;
    for Interrupt_Mask_Register_Record'Alignment use 4;
-   for Interrupt_Mask_Register_Record'Bit_Order use System.Low_Order_First;
 
    --------------------------------
    -- Interrupt status registers --
@@ -295,7 +289,6 @@ package MCU.GPIO is
 
    for Interrupt_Status_Record'Size use 32;
    for Interrupt_Status_Record'Alignment use 4;
-   for Interrupt_Status_Record'Bit_Order use System.Low_Order_First;
 
    ------------------------------
    -- Interrupt clear register --
@@ -314,7 +307,6 @@ package MCU.GPIO is
 
    for Interrupt_Clear_Register_Record'Size use 32;
    for Interrupt_Clear_Register_Record'Alignment use 4;
-   for Interrupt_Clear_Register_Record'Bit_Order use System.Low_Order_First;
 
    ----------------------------------------
    -- Alternate function select register --
@@ -333,7 +325,6 @@ package MCU.GPIO is
 
    for Alternate_Function_Select_Register_Record'Size use 32;
    for Alternate_Function_Select_Register_Record'Alignment use 4;
-   for Alternate_Function_Select_Register_Record'Bit_Order use System.Low_Order_First;
 
    -----------------------------------
    -- Drive select registers        --
@@ -353,7 +344,6 @@ package MCU.GPIO is
 
    for Drive_Select_Register_Record'Size use 32;
    for Drive_Select_Register_Record'Alignment use 4;
-   for Drive_Select_Register_Record'Bit_Order use System.Low_Order_First;
 
    --------------------------------
    -- Open drain select register --
@@ -372,7 +362,6 @@ package MCU.GPIO is
 
    for Open_Drain_Select_Register_Record'Size use 32;
    for Open_Drain_Select_Register_Record'Alignment use 4;
-   for Open_Drain_Select_Register_Record'Bit_Order use System.Low_Order_First;
 
    -----------------------------
    -- Pull-up select register --
@@ -391,7 +380,6 @@ package MCU.GPIO is
 
    for Pull_Up_Select_Register_Record'Size use 32;
    for Pull_Up_Select_Register_Record'Alignment use 4;
-   for Pull_Up_Select_Register_Record'Bit_Order use System.Low_Order_First;
 
    -------------------------------
    -- Pull-down select register --
@@ -410,7 +398,6 @@ package MCU.GPIO is
 
    for Pull_Down_Select_Register_Record'Size use 32;
    for Pull_Down_Select_Register_Record'Alignment use 4;
-   for Pull_Down_Select_Register_Record'Bit_Order use System.Low_Order_First;
 
    --------------------------------
    -- Slew rate control register --
@@ -429,7 +416,6 @@ package MCU.GPIO is
 
    for Slew_Rate_Control_Register_Record'Size use 32;
    for Slew_Rate_Control_Register_Record'Alignment use 4;
-   for Slew_Rate_Control_Register_Record'Bit_Order use System.Low_Order_First;
 
    -----------------------------
    -- Digital enable register --
@@ -448,7 +434,6 @@ package MCU.GPIO is
 
    for Digital_Enable_Register_Record'Size use 32;
    for Digital_Enable_Register_Record'Alignment use 4;
-   for Digital_Enable_Register_Record'Bit_Order use System.Low_Order_First;
 
    -------------------
    -- Lock register --
@@ -477,7 +462,6 @@ package MCU.GPIO is
 
    for Commit_Register_Record'Size use 32;
    for Commit_Register_Record'Alignment use 4;
-   for Commit_Register_Record'Bit_Order use System.Low_Order_First;
 
    ---------------------------------
    -- Analog mode select register --
@@ -496,5 +480,4 @@ package MCU.GPIO is
 
    for Analog_Mode_Select_Register_Record'Size use 32;
    for Analog_Mode_Select_Register_Record'Alignment use 4;
-   for Analog_Mode_Select_Register_Record'Bit_Order use System.Low_Order_First;
 end MCU.GPIO;

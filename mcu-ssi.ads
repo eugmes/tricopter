@@ -107,7 +107,6 @@ package MCU.SSI is
 
    for Control_Register_0_Record'Size use 32;
    for Control_Register_0_Record'Alignment use 4;
-   for Control_Register_0_Record'Bit_Order use System.Low_Order_First;
 
    ------------------------
    -- Control register 1 --
@@ -132,7 +131,6 @@ package MCU.SSI is
 
    for Control_Register_1_Record'Size use 32;
    for Control_Register_1_Record'Alignment use 4;
-   for Control_Register_1_Record'Bit_Order use System.Low_Order_First;
 
    -------------------
    -- Data register --
@@ -151,7 +149,6 @@ package MCU.SSI is
 
    for Data_Register_Record'Size use 32;
    for Data_Register_Record'Alignment use 4;
-   for Data_Register_Record'Bit_Order use System.Low_Order_First;
 
    ---------------------
    -- Status register --
@@ -178,7 +175,6 @@ package MCU.SSI is
 
    for Status_Register_Record'Size use 32;
    for Status_Register_Record'Alignment use 4;
-   for Status_Register_Record'Bit_Order use System.Low_Order_First;
 
    -----------------------------
    -- Clock prescale register --
@@ -197,7 +193,6 @@ package MCU.SSI is
 
    for Clock_Prescale_Register_Record'Size use 32;
    for Clock_Prescale_Register_Record'Alignment use 4;
-   for Clock_Prescale_Register_Record'Bit_Order use System.Low_Order_First;
 
    -- TODO
 end MCU.SSI;

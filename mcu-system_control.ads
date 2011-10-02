@@ -167,7 +167,6 @@ package MCU.System_Control is
 
    for Brown_Out_Reset_Control_Register_Record'Size use 32;
    for Brown_Out_Reset_Control_Register_Record'Alignment use 4;
-   for Brown_Out_Reset_Control_Register_Record'Bit_Order use System.Low_Order_First;
 
    --------------------------------
    -- LDO power control register --
@@ -186,7 +185,6 @@ package MCU.System_Control is
 
    for LDO_Power_Control_Register_Record'Size use 32;
    for LDO_Power_Control_Register_Record'Alignment use 4;
-   for LDO_Power_Control_Register_Record'Bit_Order use System.Low_Order_First;
 
    -----------------------------------
    -- Raw interrupt status register --
@@ -215,7 +213,6 @@ package MCU.System_Control is
 
    for Raw_Interrupt_Status_Register_Record'Size use 32;
    for Raw_Interrupt_Status_Register_Record'Alignment use 4;
-   for Raw_Interrupt_Status_Register_Record'Bit_Order use System.Low_Order_First;
 
    --------------------------
    -- Reset cause register --
@@ -246,7 +243,6 @@ package MCU.System_Control is
 
    for Reset_Cause_Register_Record'Size use 32;
    for Reset_Cause_Register_Record'Alignment use 4;
-   for Reset_Cause_Register_Record'Bit_Order use System.Low_Order_First;
 
    -------------------------------------------
    -- Run-mode clock configuration register --
@@ -293,7 +289,6 @@ package MCU.System_Control is
 
    for Run_Mode_Clock_Configuration_Register_Record'Size use 32;
    for Run_Mode_Clock_Configuration_Register_Record'Alignment use 4;
-   for Run_Mode_Clock_Configuration_Register_Record'Bit_Order use System.Low_Order_First;
 
    -------------------------------
    -- Crystal to PLL transition --
@@ -317,7 +312,6 @@ package MCU.System_Control is
 
    for GPIO_High_Performance_Bus_Control_Register_Record'Size use 32;
    for GPIO_High_Performance_Bus_Control_Register_Record'Alignment use 4;
-   for GPIO_High_Performance_Bus_Control_Register_Record'Bit_Order use System.Low_Order_First;
 
    -------------------------------------
    -- Run-mode clock configuratiuon 2 --
@@ -380,7 +374,6 @@ package MCU.System_Control is
 
    for Clock_Gating_Control_Register_1_Record'Size use 32;
    for Clock_Gating_Control_Register_1_Record'Alignment use 4;
-   for Clock_Gating_Control_Register_1_Record'Bit_Order use System.Low_Order_First;
 
    -------------------------------------
    -- Clock gating control register 2 --
@@ -407,5 +400,4 @@ package MCU.System_Control is
 
    for Clock_Gating_Control_Register_2_Record'Size use 32;
    for Clock_Gating_Control_Register_2_Record'Alignment use 4;
-   for Clock_Gating_Control_Register_2_Record'Bit_Order use System.Low_Order_First;
 end MCU.System_Control;

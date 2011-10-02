@@ -73,7 +73,6 @@ package MCU.Core.System_Tick is
 
    for Control_And_Status_Register_Record'Size use 32;
    for Control_And_Status_Register_Record'Alignment use 4;
-   for Control_And_Status_Register_Record'Bit_Order use System.Low_Order_First;
 
    ----------------------------------------
    -- Reload and current value registers --
@@ -92,5 +91,4 @@ package MCU.Core.System_Tick is
 
    for Value_Register_Record'Size use 32;
    for Value_Register_Record'Alignment use 4;
-   for Value_Register_Record'Bit_Order use System.Low_Order_First;
 end MCU.Core.System_Tick;
