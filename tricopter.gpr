@@ -21,6 +21,7 @@ project Tricopter is
          "-ffunction-sections",
          "-fdata-sections",
          "-flto",
+         "-mcpu=cortex-m3",
          "-mtpcs-frame");
   end Compiler;
 
@@ -33,7 +34,9 @@ project Tricopter is
          "-Wl,--gc-sections",
          "-ffunction-sections",
          "-fdata-sections",
-         "-Wl,-Tlm3s3749.ld");
+         "-mcpu=cortex-m3",
+         "-specs=tricopter.spec",
+         "-Wl,-dTlm3s3749.ld");
      for Default_Switches ("Ada") use Common_Switches;
      for Switches ("led_demo") use Common_Switches & ("-Wl,-Map,led_demo.map");
   end Linker;

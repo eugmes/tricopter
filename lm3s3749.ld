@@ -1,6 +1,6 @@
 OUTPUT_FORMAT("elf32-littlearm")
 OUTPUT_ARCH(arm)
-INPUT(libgnat.a)
+STARTUP(start.o)
 ENTRY(_start)
 
 MEMORY
