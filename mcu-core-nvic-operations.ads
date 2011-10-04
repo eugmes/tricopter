@@ -15,33 +15,28 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>. --
 ---------------------------------------------------------------------------
 
--- Test program that uses system tick module to blink LEDs.
+-- This package contains various routines for accessing the interrupt
+-- controller.
 
-with Real_Time;
-with Indicators;
-use type Real_Time.Time;
+pragma Restrictions (No_Elaboration_Code);
 
-procedure SysTick_Test is
-   type Clock_Phase is (Phase_1, Phase_2);
+package MCU.Core.NVIC.Operations is
+   pragma Preelaborate;
 
-   Current_Phase : Clock_Phase := Phase_1;
-   Wakeup_Time : Real_Time.Time := Real_Time.Clock;
-begin
-   Indicators.Set_States (Red => Indicators.Off, Green => Indicators.Off);
+   procedure Enable_Interrupt (Item : Interrupt);
 
-   loop
-      Wakeup_Time := Wakeup_Time + 100;
-      Real_Time.Sleep_Until (Wakeup_Time);
+   procedure Disable_Interrupt (Item : Interrupt);
 
-      case Current_Phase is
-         when Phase_1 =>
-            Current_Phase := Phase_2;
-            Indicators.Set_States (Red => Indicators.On, Green => Indicators.Off);
-         when Phase_2 =>
-            Current_Phase := Phase_1;
-            Indicators.Set_States (Red => Indicators.Off, Green => Indicators.On);
-      end case;
-   end loop;
-end SysTick_Test;
+   procedure Pend_Interrupt (Item : Interrupt);
 
-pragma No_Return(SysTick_Test);
+   procedure Unpend_Interrupt (Item : Interrupt);
+
+   function Is_Interrupt_Active (Item : Interrupt) return Boolean;
+
+   procedure Set_Interrupt_Priority (Item : Interrupt; Priority : Interrupt_Priority);
+
+   function Get_Interrupt_Priority (Item : Interrupt) return Interrupt_Priority;
+
+   -- procedure Trigger_Interrupt (Item : Interrupt);
+
+end MCU.Core.NVIC.Operations;

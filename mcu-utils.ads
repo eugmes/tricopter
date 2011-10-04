@@ -24,4 +24,16 @@ package MCU.Utils is
 
    procedure Nop;
    pragma Inline_Always (Nop);
+
+   procedure Wait_For_Interrupt;
+   pragma Inline_Always (Wait_For_Interrupt);
+
+   procedure Wait_For_Event;
+   pragma Inline_Always (Wait_For_Event);
+
+   procedure Mask_Interrupts;
+   pragma Inline_Always (Mask_Interrupts);
+
+   procedure Unmask_Interrupts;
+   pragma Inline_Always (Unmask_Interrupts);
 end MCU.Utils;

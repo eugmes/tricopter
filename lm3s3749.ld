@@ -30,12 +30,15 @@ SECTIONS
     _flash_edata = _flash_sdata + (_edata - _sdata);
 
     _sbss = .;
-    .bss ALIGN(8) : {
+    .bss ALIGN(8) (NOLOAD) : {
         *(.bss) *(.bss.*)
         . = ALIGN(4);
     } > ram AT> ram
     _ebss = .;
 
+    .stack ALIGN(8) (NOLOAD) : { *(.stack) *(.stack.*) } > ram AT> ram
+
+    /* TODO explicitly allocate environment task stack */
     _stack_top = ORIGIN(ram) + LENGTH(ram);
 
     /* DWARF 1 */

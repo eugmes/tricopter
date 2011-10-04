@@ -17,11 +17,31 @@
 
 pragma Restrictions (No_Elaboration_Code);
 with System.Machine_Code;
+use System.Machine_Code;
 
 package body MCU.Utils is
    procedure Nop is
-      use System.Machine_Code;
    begin
-      Asm ("nop", Volatile => True, Clobber => "memory");
+      Asm ("nop", Volatile => True);
    end Nop;
+
+   procedure Wait_For_Interrupt is
+   begin
+      Asm ("wfi", Volatile => True);
+   end Wait_For_Interrupt;
+
+   procedure Wait_For_Event is
+   begin
+      Asm ("wfe", Volatile => True);
+   end Wait_For_Event;
+
+   procedure Mask_Interrupts is
+   begin
+      Asm ("cpsid i", Volatile => True);
+   end Mask_Interrupts;
+
+   procedure Unmask_Interrupts is
+   begin
+      Asm ("cpsie i", Volatile => True);
+   end Unmask_Interrupts;
 end MCU.Utils;
