@@ -1,7 +1,14 @@
 OUTPUT_FORMAT("elf32-littlearm")
 OUTPUT_ARCH(arm)
 STARTUP(start.o)
+
 ENTRY(_start)
+EXTERN(_start __gnat_vectors)
+
+/* Environment task stack size */
+ENVIRONMENT_STACK_SIZE = DEFINED(ENVIRONMENT_STACK_SIZE) ? ALIGN(ENVIRONMENT_STACK_SIZE, 8) : 1k;
+/* Interrupt handlers stack size */
+INTERRUPT_STACK_SIZE = DEFINED(INTERRUPT_STACK_SIZE) ? ALIGN(INTERRUPT_STACK_SIZE, 8) : 1k;
 
 MEMORY
 {
@@ -9,40 +16,50 @@ MEMORY
     ram   : ORIGIN = 0x20000000, LENGTH = 64k
 }
 
+PHDRS
+{
+    text PT_LOAD;
+    data PT_LOAD;
+    bss  PT_NULL;
+}
+
 SECTIONS
 {
-    . = ORIGIN(flash);
-    .vectors . : { KEEP(*(.vectors)) } > flash
+    .vectors ORIGIN(flash) : { KEEP(*(.vectors)) } > flash :text
     ASSERT (. != 0, "Vector table is not present")
 
-    .text ALIGN(4) : { *(.text) *(.text.*)} > flash
+    .text : { *(.text) *(.text.*)} > flash
 
-    .rodata ALIGN(8) : { *(.rodata) *(.rodata.*)} > flash
+    .rodata : { *(.rodata) *(.rodata.*)} > flash
 
-    _flash_sdata = .;
-    . = ORIGIN(ram);
-    _sdata = .;
-    .data ALIGN(8) : {
-        *(.data) *(.data.*)
-        . = ALIGN(4);
-    } > ram AT> flash
-    _edata = .;
-    _flash_edata = _flash_sdata + (_edata - _sdata);
+    .data ORIGIN(ram) : { *(.data) *(.data.*) } > ram AT> flash :data
 
-    _sbss = .;
-    .bss ALIGN(8) (NOLOAD) : {
-        *(.bss) *(.bss.*)
-        . = ALIGN(4);
-    } > ram AT> ram
-    _ebss = .;
+    _flash_sdata = LOADADDR(.data);
+    _sdata = ADDR(.data);
+    _flash_edata = _flash_sdata + SIZEOF(.data);
 
-    .stack ALIGN(8) (NOLOAD) : { *(.stack) *(.stack.*) } > ram AT> ram
+    .bss : { *(.bss) *(.bss.*) } > ram AT> ram :bss
 
-    /* TODO explicitly allocate environment task stack */
-    _stack_top = ORIGIN(ram) + LENGTH(ram);
+    _sbss = ADDR(.bss);
+    _ebss = ADDR(.bss) + SIZEOF(.bss);
+
+    .stack : ALIGN(8)
+    {
+        *(.stack)
+	*(.stack.*)
+	/* Environment task stack */
+	. = ALIGN(8);
+	__gnat_environment_stack = .;
+	. += ENVIRONMENT_STACK_SIZE;
+	__gnat_environment_stack_top = .;
+	/* Interrupt stack */
+	__gnat_interrupt_stack = .;
+	. += INTERRUPT_STACK_SIZE;
+	__gnat_interrupt_stack_top = .;
+    } > ram AT> ram :bss
 
     /* DWARF 1 */
-    .debug          0 : { *(.debug) }
+    .debug          0 : { *(.debug) } :NONE
     .line           0 : { *(.line) }
     /* GNU DWARF 1 extensions */
     .debug_srcinfo  0 : { *(.debug_srcinfo) }
